@@ -1,5 +1,8 @@
 
 {
   "auctionType": "Forward Auction",
-  "auctionName": "Test Auction"
+  "auctionName": "Test Auction",
+  "templateName": "Forward Auction template",
+  "UOM": "KG",
+  "delivery": "Hyderabad"
 }
