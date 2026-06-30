@@ -4,5 +4,17 @@
   "auctionName": "Test Auction",
   "templateName": "Forward Auction template",
   "UOM": "KG",
-  "delivery": "Hyderabad"
+  "delivery": "Hyderabad",
+  "prDescription": "pr description related to the purchase requisition",
+  "deliveryLocation":"Hyderabad",
+  "needByDate": "2024-06-30",
+  "businessEntity": "Entity1",
+  "buyer":"Harshit",
+  "currency":"INR",
+  "budget":"15 mins budget . Application Software Licenses",
+  "productName":"777 - Laptops",
+  "quantity":"10",
+  "uom":"Each",
+  "price":"234.67"
+
 }
