@@ -1,20 +1,28 @@
-
 {
-  "auctionType": "Forward Auction",
-  "auctionName": "Test Auction",
-  "templateName": "Forward Auction template",
-  "UOM": "KG",
-  "delivery": "Hyderabad",
-  "prDescription": "pr description related to the purchase requisition",
-  "deliveryLocation":"Hyderabad",
-  "needByDate": "2024-06-30",
-  "businessEntity": "Entity1",
-  "buyer":"Harshit",
-  "currency":"INR",
-  "budget":"15 mins budget . Application Software Licenses",
-  "productName":"777 - Laptops",
-  "quantity":"10",
-  "uom":"Each",
-  "price":"234.67"
-
+    "createAuction": {
+        "auctionType": "Forward Auction",
+        "auctionName": "Test Auction",
+        "templateName": "Forward Auction template",
+        "UOM": "KG",
+        "delivery": "Hyderabad"
+    },
+    "createPurchaseRequisition": {
+        "prDescription": "pr description related to the purchase requisition",
+        "deliveryLocation": "Hyderabad",
+        "needByDate": "2024-06-30",
+        "businessEntity": "Entity1",
+        "buyer": "Harshit",
+        "currency": "INR",
+        "budget": "Budget PR to Bid . Office Supplies"
+    },
+    "addLine": {
+        "productName": "777 - Laptops",
+        "quantity": "10",
+        "uom": "Each",
+        "price": "234.67",
+        "prNumber": "PR_00226"
+    },
+    "approver": {
+        "number": "PR_00201"
+    }
 }
