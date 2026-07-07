@@ -12,4 +12,4 @@ class ApprovalPage {
         await this.page.click(this.approvalRequest);
         await this.page.fill(this.searchTasks, testData.approver.number);
     }
-}
+}module.exports = ApprovalPage;

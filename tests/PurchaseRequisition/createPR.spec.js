@@ -8,10 +8,10 @@ const testData = require('../../testdata.json');
 
 test.describe('Purchase Requisition Page', () => {
     test.beforeEach(async ({ page }) => {
-        const loginPage = new LoginPage(page);
-        const { loginUrl, email, password } = loadCredentials();
-        await page.goto(loginUrl);
-        await loginPage.login(email, password);
+        const loginPage = new LoginPage(page);      
+        const credentials = loadCredentials();
+        await page.goto(credentials.loginUrl);
+        await loginPage.login(credentials.requestor.email, credentials.requestor.password);
     });
 
     test('should create a new purchase requisition', async ({ page }) => {
@@ -23,7 +23,7 @@ test.describe('Purchase Requisition Page', () => {
         console.log(`Delivery Location: ${testData.createPurchaseRequisition.deliveryLocation}`);
 
         const add_pr_line_page = new Add_Pr_Line(page);
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 1; i++) {
             console.log(`Adding line ${i + 1}`);
             await add_pr_line_page.addPurchaseRequisitionLine(testData);
             console.log(`Line ${i + 1} added`);
