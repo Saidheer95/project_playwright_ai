@@ -14,7 +14,7 @@ test.describe('Approval Flow',()=>{
     test('should navigate to approval request and search for the PR number',async({page})=>{
         const approval_flow_page=new Approvals(page);
         await approval_flow_page.navigateToApprovalRequest(testData);
-        console.log(`Searching for PR Number: ${testData.approver.number}`);
+        console.log(`Searching for PR Number: ${testData.approvers.number}`);
     });
 
 })

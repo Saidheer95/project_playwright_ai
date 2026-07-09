@@ -59,21 +59,25 @@ export default defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
+    // {
+    //   name: 'chromium',
+    //   use: {
+    //     ...devices['Desktop Chrome'],
+    //     screenshot: "on",
+    //     video: "on",
+    //     trace: "on"
+    //   }
+    //   ,
+    // },
+
     {
-      name: 'chromium',
-      use: {
-        ...devices['Desktop Chrome'],
+      name: 'firefox',
+      use: { ...devices['Desktop Firefox'],
         screenshot: "on",
         video: "on",
         trace: "on"
-      }
-      ,
+       },
     },
-
-    // {
-    //   name: 'firefox',
-    //   use: { ...devices['Desktop Firefox'] },
-    // },
 
     // {
     //   name: 'webkit',

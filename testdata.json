@@ -20,9 +20,15 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00230"
+        "prNumber": "PR_00242"
     },
-    "approver": {
-        "number": "PR_00230"
+    "approvers": {
+        "number": "PR_00242",
+        "action": "Approve",
+        "comments": "Approved"
+    },
+    "createBid":{
+        "type":"Bid",
+        "bidname":"RFQ"
     }
 }

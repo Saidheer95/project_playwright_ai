@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 
 class JsonWriter {
-
     static savePRNumber(prNumber) {
 
         const filePath = path.join(__dirname, '..', 'testdata.json');
@@ -13,11 +12,12 @@ class JsonWriter {
             data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         }
 
-        if (!data.addLine) {
-            data.addLine = {};
-        }
+        data.addLine = data.addLine || {};
+        data.approvers = data.approvers || {};
 
+        // Save same value in both places
         data.addLine.prNumber = prNumber;
+        data.approvers.number = prNumber;
 
         fs.writeFileSync(
             filePath,
@@ -25,8 +25,9 @@ class JsonWriter {
         );
 
         console.log("PR Number saved:", prNumber);
+        console.log("Approver Number saved:", prNumber);
     }
 
-}
 
-module.exports = JsonWriter;
+
+} module.exports = JsonWriter;
