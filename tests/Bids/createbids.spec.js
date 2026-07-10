@@ -2,7 +2,6 @@ const{test,expect}=require('@playwright/test');
 const Create_Bid=require('../../pages/PR_BID/bids.page');
 const {LoginPage,loadCredentials}=require('../../pages/Login/login.page');
 const testData=require('../../testdata.json');
-
 test.describe('Create Bid Flow',()=>{
     test.beforeEach(async({page})=>{
         const loginPage=new LoginPage(page); 

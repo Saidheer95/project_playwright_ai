@@ -1,6 +1,6 @@
 const JsonWriter = require('../../utils/JsonWriter');
 
-class PurchaserequisitionPage {
+class PurchaseRequisitionPage {
     constructor(page) {
         this.page = page;
 
@@ -81,4 +81,4 @@ class PurchaserequisitionPage {
 
 }
 
-module.exports = PurchaserequisitionPage;
+module.exports = PurchaseRequisitionPage;

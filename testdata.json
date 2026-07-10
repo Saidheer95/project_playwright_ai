@@ -29,6 +29,11 @@
     },
     "createBid":{
         "type":"Bid",
-        "bidname":"RFQ"
+        "bidname":"RFQ",
+        "supplier":{
+            "name":["Demo", "Tale industries"]
+        },
+        "termsType":"Terms",
+        "termsDescription":"Payment Terms"
     }
 }
