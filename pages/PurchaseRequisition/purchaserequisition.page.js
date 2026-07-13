@@ -7,9 +7,9 @@ class PurchaseRequisitionPage {
         this.requisitionLink = '[data-testid="nav-requisitions"]';
         this.createPR = '[data-testid="button-create-pr"]';
         this.enterPrDescription = '[data-testid="input-pr-description"]';
-        this.selectdeliveryLocation = '[data-testid="select-delivery-location"]';
-        this.needByDate = '[data-testid="input-need-by-date"]';
         this.selectBusinessEntity = '[data-testid="select-pr-business-entity"]';
+        this.needByDate = '[data-testid="input-need-by-date"]';
+        this.selectdeliveryLocation = '[data-testid="select-delivery-location"]';
         this.selectBuyer = '[data-testid="select-buyer"]';
         this.selectCurrency = '[data-testid="select-currency"]';
         this.selectBudget = '[data-testid="select-budget"]';
@@ -50,11 +50,15 @@ class PurchaseRequisitionPage {
 
         await this.page.fill(this.enterPrDescription, testData.createPurchaseRequisition.prDescription);
 
+        await this.selectDropdown(this.selectBusinessEntity, testData.createPurchaseRequisition.businessEntity);
+
+        const date=new Date();
+        const formattedDate = date.toISOString().split('T')[0];
+        console.log("Current Date:", formattedDate);
+        await this.page.fill(this.needByDate, formattedDate);
+
         await this.selectDropdown(this.selectdeliveryLocation, testData.createPurchaseRequisition.deliveryLocation);
 
-        await this.page.fill(this.needByDate, testData.createPurchaseRequisition.needByDate);
-
-        await this.selectDropdown(this.selectBusinessEntity, testData.createPurchaseRequisition.businessEntity);
 
         await this.selectDropdown(this.selectBuyer, testData.createPurchaseRequisition.buyer);
 

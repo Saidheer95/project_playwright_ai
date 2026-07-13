@@ -1,5 +1,5 @@
 const{test,expect}=require('@playwright/test');
-const Create_Bid=require('../../pages/PR_BID/bids.page');
+const Create_Bid=require('../../pages/PR_BID/bidsRFQ.page');
 const {LoginPage,loadCredentials}=require('../../pages/Login/login.page');
 const testData=require('../../testdata.json');
 test.describe('Create Bid Flow',()=>{

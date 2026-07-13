@@ -20,20 +20,51 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00242"
+        "prNumber": "PR_00247"
     },
     "approvers": {
-        "number": "PR_00242",
+        "number": "PR_00247",
         "action": "Approve",
         "comments": "Approved"
     },
-    "createBid":{
-        "type":"Bid",
-        "bidname":"RFQ",
-        "supplier":{
-            "name":["Demo", "Tale industries"]
+    "createBidRFQ": {
+        "type": "Bid",
+        "bidname": "RFQ",
+        "supplier": {
+            "name": [
+                "Demo",
+                "Tale industries"
+            ]
         },
-        "termsType":"Terms",
-        "termsDescription":"Payment Terms"
+        "termsType": "Terms",
+        "termsDescription": "Payment Terms"
+    },
+    "createBidRFP": {
+        "type": "Bid",
+        "bidname": "RFP",
+        "supplier": {
+            "name": [
+                "Demo",
+                "Tale industries"
+            ]
+        },
+        "criteriaCategory": {
+            "name": [
+                "Business",
+                "Finance"
+            ]
+        },
+        "criteriaDescription": "Criteria Description",
+        "criteriaOption": "Optional",
+        "criteriaValueType": "Text",
+        "criteriaWeight": "50",
+        "technicalTeam": {
+            "name": "Abhilash"
+        },
+        "commercialTeam": {
+            "name": "Sai"
+        },
+        "termsType": "Terms",
+        "termsDescription": "Payment Terms"
     }
 }
