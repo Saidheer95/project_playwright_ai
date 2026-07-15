@@ -32,6 +32,8 @@ class LoginPage {
     this.emailID = '[data-testid="input-email"]';
     this.password = '[data-testid="input-password"]';
     this.signIn = '[data-testid="button-login"]';
+    this.clickUser='[data-testid="button-user-menu"]';
+    this.signOut='[data-testid="button-logout"]';
   }
 
   async login(email, password) {
@@ -43,7 +45,12 @@ class LoginPage {
 
     await expect(this.page.locator(this.signIn)).toBeVisible();
     await this.page.click(this.signIn);
+
+    // await this.page.click(this.clickUser);
+    // await this.page.click(this.signOut);
   }
+
+
 
 
 }

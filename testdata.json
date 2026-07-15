@@ -13,17 +13,17 @@
         "businessEntity": "Entity1",
         "buyer": "Harshit",
         "currency": "INR",
-        "budget": "Budget PR to Bid . Office Supplies"
+        "budget": "15 mins budget . Application Software Licenses"
     },
     "addLine": {
         "productName": "777 - Laptops",
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00247"
+        "prNumber": "PR_00282"
     },
     "approvers": {
-        "number": "PR_00247",
+        "number": "PR_00282",
         "action": "Approve",
         "comments": "Approved"
     },

@@ -19,24 +19,22 @@ class Bids {
         // Locator for the invite suppliers button
         this.finalInvite = '[data-testid="button-invite-suppliers"]';
         // Locator for the terms tab in the bid workflow
-        this.clickTerms='[data-testid="tab-terms"]';
+        this.clickTerms = '[data-testid="tab-terms"]';
         // Locator for the add clause button
-        this.clickAddTerms='[data-testid="button-add-clause"]';
+        this.clickAddTerms = '[data-testid="button-add-clause"]';
         // Locator for the clause type dropdown selector
-        this.selectTermsType='[data-testid="select-clause-type"]';
+        this.selectTermsType = '[data-testid="select-clause-type"]';
         // Locator for the clause description input field
-        this.enterTermsDesciptin='[data-testid="input-clause-desc"]'
+        this.enterTermsDesciptin = '[data-testid="input-clause-desc"]'
         // Locator for the submit clause button
-        this.clauseSubmit='[data-testid="button-submit-clause"]';
+        this.clauseSubmit = '[data-testid="button-submit-clause"]';
         // Locator for the publish bid button
-        this.publishBid='[data-testid="button-publish-bid"]';
+        this.publishBid = '[data-testid="button-publish-bid"]';
         // Locator for the final publish confirmation button
-        this.finalBid='[data-testid="button-publish-confirm"]';
+        this.finalBid = '[data-testid="button-publish-confirm"]';
     }
 
     async createBid(testData) {
-        // Pause execution so a developer can inspect the browser state manually
-        await this.page.pause();
         // Click the requisitions navigation link to open the requisitions page
         await this.page.click(this.requisitionLink);
         // Fill the PR search field with the PR number from the test data
@@ -88,7 +86,7 @@ class Bids {
         // Select the specific terms type from the options using test data
         await this.page.getByRole('option', { name: testData.createBidRFQ.termsType }).click();
         // Fill the clause description field with the description from test data
-        await this.page.fill(this.enterTermsDesciptin, testData.createBid.termsDescription);
+        await this.page.fill(this.enterTermsDesciptin, testData.createBidRFQ.termsDescription);
         // Submit the newly added clause
         await this.page.click(this.clauseSubmit);
         // Click the publish bid button to begin publishing
@@ -96,4 +94,4 @@ class Bids {
         // Confirm the final publish action for the bid
         await this.page.click(this.finalBid);
     }
-}module.exports = Bids;
+} module.exports = Bids;

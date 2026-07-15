@@ -20,22 +20,24 @@ class PurchaseRequisitionPage {
     async selectDropdown(dropdownLocator, optionText) {
         const dropdown = this.page.locator(dropdownLocator);
 
+        await dropdown.waitFor({ state: 'visible' });
         await dropdown.scrollIntoViewIfNeeded();
         await dropdown.click();
 
-        await this.page.waitForTimeout(500);
-
+        const optionTextValue = optionText?.trim();
         const optionLocators = [
-            this.page.getByRole('option', { name: optionText, exact: true }),
-            this.page.getByText(optionText, { exact: true }),
-            this.page.locator(`span:text-is("${optionText}")`),
-            this.page.locator(`text="${optionText}"`)
+            this.page.getByRole('option', { name: optionTextValue, exact: true }),
+            this.page.getByText(optionTextValue, { exact: true }),
+            this.page.locator('span').filter({ hasText: optionTextValue }),
+            this.page.locator(`text=${optionTextValue}`)
         ];
 
         for (const option of optionLocators) {
             if (await option.count()) {
-                await option.first().scrollIntoViewIfNeeded();
-                await option.first().click();
+                const matchedOption = option.first();
+                await matchedOption.waitFor({ state: 'visible' });
+                await matchedOption.scrollIntoViewIfNeeded();
+                await matchedOption.click();
                 return;
             }
         }
@@ -44,18 +46,27 @@ class PurchaseRequisitionPage {
     }
 
     async createPurchaseRequisitionPage(testData) {
+        const requisitionLink = this.page.locator(this.requisitionLink);
+        const createPrButton = this.page.locator(this.createPR);
+        const descriptionInput = this.page.locator(this.enterPrDescription);
+        const needByDateInput = this.page.locator(this.needByDate);
+        const submitButton = this.page.locator(this.finalSubmitPR);
 
-        await this.page.click(this.requisitionLink);
-        await this.page.click(this.createPR);
+        await requisitionLink.waitFor({ state: 'visible' });
+        await requisitionLink.click();
+        await createPrButton.waitFor({ state: 'visible' });
+        await createPrButton.click();
+        await descriptionInput.waitFor({ state: 'visible' });
 
-        await this.page.fill(this.enterPrDescription, testData.createPurchaseRequisition.prDescription);
+        await descriptionInput.fill(testData.createPurchaseRequisition.prDescription);
 
         await this.selectDropdown(this.selectBusinessEntity, testData.createPurchaseRequisition.businessEntity);
 
-        const date=new Date();
+        const date = new Date();
+        date.setDate(date.getDate() + 1);
         const formattedDate = date.toISOString().split('T')[0];
-        console.log("Current Date:", formattedDate);
-        await this.page.fill(this.needByDate, formattedDate);
+        await needByDateInput.waitFor({ state: 'visible' });
+        await needByDateInput.fill(formattedDate);
 
         await this.selectDropdown(this.selectdeliveryLocation, testData.createPurchaseRequisition.deliveryLocation);
 
@@ -66,17 +77,23 @@ class PurchaseRequisitionPage {
 
         await this.selectDropdown(this.selectBudget, testData.createPurchaseRequisition.budget);
 
-        await this.page.click(this.finalSubmitPR);
+        await submitButton.waitFor({ state: 'visible' });
+        await submitButton.click();
 
 
 
     }
 
     async getPRNumber() {
-        // await this.page.waitForSelector(this.prNumber, { state: 'visible' });
+        const prNumberLocator = this.page.locator(this.prNumber);
+        await prNumberLocator.waitFor({ state: 'visible' });
 
-        const prNumber = (await this.page.locator(this.prNumber).textContent());
+        const prNumberText = await prNumberLocator.textContent();
+        const prNumber = prNumberText?.trim();
 
+        if (!prNumber) {
+            throw new Error('PR number was not found on the page.');
+        }
 
         JsonWriter.savePRNumber(prNumber);
 

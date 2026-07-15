@@ -31,7 +31,6 @@ class BidsRFP {
         this.finalBid = '[data-testid="button-publish-confirm"]';
     }
     async createBidRFP(testData) {
-        await this.page.pause();
         await this.page.click(this.requisitionLink);
         await this.page.fill(this.searchPR, testData.addLine.prNumber);
         const clickButton = await this.page.getByRole('button', { name: testData.createBidRFP.type });
