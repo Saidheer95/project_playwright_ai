@@ -2,7 +2,7 @@ const { test } = require('@playwright/test');
 const { LoginPage, loadCredentials } = require('../../pages/Login/login.page');
 
 test.describe('Login page', () => {
-  test('should login with credentials from file', async ({ page }) => {
+  test('@smoke should login with credentials from file', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const credentials = loadCredentials();
 
@@ -13,7 +13,7 @@ test.describe('Login page', () => {
     await page.waitForURL('**/dashboard');
   });
 
-  test('login with invalid credentials should show an error', async ({ page }) => {
+  test('@smoke login with invalid credentials should show an error', async ({ page }) => {
     const loginPage = new LoginPage(page);
     const credentials = loadCredentials();
 
