@@ -17,7 +17,7 @@ pipeline {
 
         stage('Run Smoke Tests') {
             steps {
-                bat 'npx playwright test'
+                bat 'npx playwright test --grep @smoke'
             }
         }
     }
@@ -25,6 +25,12 @@ pipeline {
     post {
         always {
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
+
+            allure(
+                includeProperties: false,
+                jdk: '',
+                results: [[path: 'allure-results']]
+            )
         }
     }
 }
