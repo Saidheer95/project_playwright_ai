@@ -66,5 +66,17 @@
         },
         "termsType": "Terms",
         "termsDescription": "Payment Terms"
+    },
+    "directBid":{
+        "bidDescription":"Enter the bid description",
+        "bidType":"RFQ",
+        "businessEntity":"Entity1",
+        "buyer":"Harshit",
+        "currency":"INR",
+        "enterOpendate":"2026-07-22T18:30",
+        "enterClosedDate":"2026-07-26T17:27",
+        "paymentTerms":"30 Days",
+        "deliveryLocation":"Chennai"
+
     }
 }
