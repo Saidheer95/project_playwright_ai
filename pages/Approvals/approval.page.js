@@ -24,7 +24,5 @@ class ApprovalPage {
         const finalApprove=await this.page.getByRole('button',{name:testData.approvers.action});
         await finalApprove.click();
     
-
-
     }
 }module.exports = ApprovalPage;

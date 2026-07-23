@@ -17,6 +17,7 @@
     },
     "addLine": {
         "productName": "777 - Laptops",
+        "lineType":"Service",
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
@@ -73,7 +74,7 @@
         "businessEntity":"Entity1",
         "buyer":"Harshit",
         "currency":"INR",
-        "enterOpendate":"2026-07-22T18:30",
+        "enterOpendate":"2026-07-23T17:10",
         "enterClosedDate":"2026-07-26T17:27",
         "paymentTerms":"30 Days",
         "deliveryLocation":"Chennai"

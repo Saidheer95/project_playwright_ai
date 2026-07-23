@@ -40,7 +40,6 @@ class AddPrLinePage {
 
     async addPurchaseRequisitionLine(testData) {
 
-        await this.page.pause(); // Wait for the dropdown to appear
         // Open Add Line modal
         await this.page.click(this.addLineButton);
 
