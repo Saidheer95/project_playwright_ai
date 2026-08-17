@@ -13,18 +13,18 @@
         "businessEntity": "Entity1",
         "buyer": "Harshit",
         "currency": "INR",
-        "budget": "15 mins budget . Application Software Licenses"
+        "budget": "Automation budget . Application Software Licenses"
     },
     "addLine": {
         "productName": "777 - Laptops",
-        "lineType":"Service",
+        "lineType": "Service",
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00282"
+        "prNumber": "PR_00561"
     },
     "approvers": {
-        "number": "PR_00282",
+        "number": "PR_00561",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -68,16 +68,15 @@
         "termsType": "Terms",
         "termsDescription": "Payment Terms"
     },
-    "directBid":{
-        "bidDescription":"Enter the bid description",
-        "bidType":"RFQ",
-        "businessEntity":"Entity1",
-        "buyer":"Harshit",
-        "currency":"INR",
-        "enterOpendate":"2026-07-23T17:10",
-        "enterClosedDate":"2026-07-26T17:27",
-        "paymentTerms":"30 Days",
-        "deliveryLocation":"Chennai"
-
+    "directBid": {
+        "bidDescription": "Enter the bid description",
+        "bidType": "RFQ",
+        "businessEntity": "Entity1",
+        "buyer": "Harshit",
+        "currency": "INR",
+        "enterOpendate": "2026-07-23T17:10",
+        "enterClosedDate": "2026-07-26T17:27",
+        "paymentTerms": "30 Days",
+        "deliveryLocation": "Chennai"
     }
 }
