@@ -29,22 +29,22 @@ class LoginPage {
   constructor(page) {
     this.page = page;
 
-    this.emailID = '[data-testid="input-email"]';
-    this.password = '[data-testid="input-password"]';
-    this.signIn = '[data-testid="button-login"]';
-    this.clickUser='[data-testid="button-user-menu"]';
-    this.signOut='[data-testid="button-logout"]';
+    this.emailID =page.locator('[data-testid="input-email"]') ;
+    this.passwordInput = page.locator('[data-testid="input-password"]');
+    this.signIn = page.locator('[data-testid="button-login"]');
+    this.clickUser=page.locator('[data-testid="button-user-menu"]');
+    this.signOut=page.locator('[data-testid="button-logout"]');
   }
 
   async login(email, password) {
-    await expect(this.page.locator(this.emailID)).toBeVisible();
-    await this.page.fill(this.emailID, email);
+    await expect(this.emailID).toBeVisible();
+    await this.emailID.fill(email);
 
-    await expect(this.page.locator(this.password)).toBeVisible();
-    await this.page.fill(this.password, password);
+    await expect(this.passwordInput).toBeVisible();
+    await this.passwordInput.fill(password);
 
-    await expect(this.page.locator(this.signIn)).toBeVisible();
-    await this.page.click(this.signIn);
+    await expect(this.signIn).toBeVisible();
+    await this.signIn.click();
 
     // await this.page.click(this.clickUser);
     // await this.page.click(this.signOut);

@@ -35,29 +35,10 @@ class ApprovalPage {
         // Checklist
         // =========================================================
 
-        /*
-         * We intentionally don't use:
-         *
-         * checkbox-checklist-item-14
-         * checkbox-checklist-item-15
-         * checkbox-checklist-item-16
-         *
-         * because those IDs can change.
-         */
 
         this.checklistRows =
             '[data-testid^="row-approval-checklist-"]';
 
-
-        /*
-         * Mandatory checklist remark.
-         *
-         * Mandatory:
-         *      placeholder="Remarks (required)"
-         *
-         * Optional:
-         *      placeholder="Remarks, if any"
-         */
 
         this.mandatoryRemarkInput =
             'input[placeholder="Remarks (required)"]';
@@ -843,16 +824,7 @@ class ApprovalPage {
             // BOTH APPROVERS
             // =====================================================
 
-            /*
-             * IMPORTANT:
-             *
-             * Both first and subsequent approvers
-             * enter the FINAL APPROVAL COMMENTS.
-             *
-             * This is the textarea:
-             *
-             * input-checklist-comments
-             */
+           
 
             await this.enterApprovalComments(
                 comments
@@ -884,10 +856,7 @@ class ApprovalPage {
             );
 
 
-            /*
-             * Reject / More Info / Delegate can be
-             * implemented separately later.
-             */
+          
         }
     }
 }

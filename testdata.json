@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00561"
+        "prNumber": "PR_00563"
     },
     "approvers": {
-        "number": "PR_00561",
+        "number": "PR_00563",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -67,6 +67,17 @@
         },
         "termsType": "Terms",
         "termsDescription": "Payment Terms"
+    },
+    "createPurchaseOrder": {
+        "type": "PO",
+        "supplierName": "Sai Corporation",
+        "paymentTerms": "30 Days",
+        "advancePayment": "10"
+    },
+    "poApprover": {
+        "number": "",
+        "action": "Approve",
+        "comments": "Approved"
     },
     "directBid": {
         "bidDescription": "Enter the bid description",
