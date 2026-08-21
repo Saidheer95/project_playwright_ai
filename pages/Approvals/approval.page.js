@@ -1,864 +1,658 @@
-const { expect } = require('@playwright/test');
+const {
+  assertVisible,
+  assertEnabled,
+  assertHasValue,
+  assertHasAttribute
+} = require('../../utils/assertions');
+
 
 class ApprovalPage {
 
-    constructor(page) {
+  constructor(page) {
 
-        this.page = page;
+    this.page =
+      page;
 
-        // =========================================================
-        // Approval Navigation
-        // =========================================================
 
-        this.approvalLink =
-            '[data-testid="button-notifications"]';
+    // =========================================================
+    // Navigation
+    // =========================================================
 
-        this.approvalRequest =
-            '[data-testid="link-view-all-notifications"]';
+    this.approvalLink =
+      '[data-testid="button-notifications"]';
 
-        this.searchTasks =
-            '[data-testid="input-search-tasks"]';
+    this.approvalRequest =
+      '[data-testid="link-view-all-notifications"]';
 
-        this.clickTask =
-            '[data-testid="task-entity-0"]';
+    this.searchTasks =
+      '[data-testid="input-search-tasks"]';
 
+    this.clickTask =
+      '[data-testid="task-entity-0"]';
 
-        // =========================================================
-        // Approval Dropdown
-        // =========================================================
 
-        this.clickApprovalsDropdown =
-            '[data-testid="button-approve"]';
+    // =========================================================
+    // Approval Action
+    // =========================================================
 
+    this.clickApprovalsDropdown =
+      '[data-testid="button-approve"]';
 
-        // =========================================================
-        // Checklist
-        // =========================================================
 
+    // =========================================================
+    // Checklist
+    // =========================================================
 
-        this.checklistRows =
-            '[data-testid^="row-approval-checklist-"]';
+    this.checklistRows =
+      '[data-testid^="row-approval-checklist-"]';
 
+    this.mandatoryRemarkInput =
+      'input[placeholder="Remarks (required)"]';
 
-        this.mandatoryRemarkInput =
-            'input[placeholder="Remarks (required)"]';
+    this.checklistComments =
+      'textarea[data-testid^="input-checklist-comments"]';
 
 
-        // =========================================================
-        // Approval Comments
-        // =========================================================
+    // =========================================================
+    // Approval Buttons
+    // =========================================================
 
-        /*
-         * IMPORTANT:
-         *
-         * This is NOT the checklist remark.
-         *
-         * This is the final approval Comments textarea.
-         */
+    this.approveButton =
+      '[data-testid="button-checklist-approve"]';
 
-        this.approvalComments =
-            'textarea[data-testid="input-checklist-comments"]';
+    this.approvalComments =
+      'textarea[data-testid="input-approval-remarks"]';
 
+    this.approvalActionButton =
+      '[data-testid="button-approval-confirm"]';
+  }
 
-        // =========================================================
-        // Final Approve Button
-        // =========================================================
 
-        this.finalApproveButton =
-            'button';
-    }
+  // ===========================================================
+  // NAVIGATE TO APPROVAL REQUEST
+  // ===========================================================
 
+  async navigateToApprovalRequest(testData) {
 
-    // =============================================================
-    // Navigate to Approval Request
-    // =============================================================
+    const prNumber =
+      testData.approvers.number;
 
-    async navigateToApprovalRequest(testData) {
 
-        console.log('');
-        console.log('==========================================');
-        console.log('Opening Approval Requests');
-        console.log('==========================================');
+    console.log(
+      `Searching approval request for PR: ${prNumber}`
+    );
 
 
-        // ---------------------------------------------------------
-        // Notification
-        // ---------------------------------------------------------
+    // =========================================================
+    // Notification
+    // =========================================================
 
-        const notification =
-            this.page.locator(
-                this.approvalLink
-            );
+    const notification =
+      this.page.locator(
+        this.approvalLink
+      );
 
-        await notification.waitFor({
-            state: 'visible',
-            timeout: 15000
-        });
 
-        await notification.click();
+    console.log(
+      'Waiting for notification button...'
+    );
 
 
-        // ---------------------------------------------------------
-        // View All Approval Requests
-        // ---------------------------------------------------------
+    await assertVisible(notification, 30000);
 
-        const approvalRequest =
-            this.page.locator(
-                this.approvalRequest
-            );
 
-        await approvalRequest.waitFor({
-            state: 'visible',
-            timeout: 15000
-        });
+    await assertEnabled(notification, 30000);
 
-        await approvalRequest.click();
 
+    await notification.click();
 
-        // ---------------------------------------------------------
-        // Search PR
-        // ---------------------------------------------------------
 
-        const searchBox =
-            this.page.locator(
-                this.searchTasks
-            );
+    console.log(
+      'Notification button clicked'
+    );
 
-        await searchBox.waitFor({
-            state: 'visible',
-            timeout: 15000
-        });
 
+    // =========================================================
+    // View All Approval Requests
+    // =========================================================
 
-        await searchBox.fill(
-            testData.approvers.number
-        );
+    const approvalRequest =
+      this.page.locator(
+        this.approvalRequest
+      );
 
 
-        console.log(
-            `Searching for PR Number: ${testData.approvers.number}`
-        );
+    console.log(
+      'Waiting for approval request link...'
+    );
 
 
-        // ---------------------------------------------------------
-        // Open PR Task
-        // ---------------------------------------------------------
+    await assertVisible(approvalRequest, 30000);
 
-        const task =
-            this.page.locator(
-                this.clickTask
-            );
 
+    await approvalRequest.click();
 
-        await task.waitFor({
-            state: 'visible',
-            timeout: 15000
-        });
 
+    console.log(
+      'Approval request page opened'
+    );
 
-        await task.click();
 
+    // =========================================================
+    // Search Box
+    // =========================================================
 
-        console.log(
-            `PR ${testData.approvers.number} opened`
-        );
-    }
+    const searchBox =
+      this.page.locator(
+        this.searchTasks
+      );
 
 
-    // =============================================================
-    // Open Approval Action
-    // =============================================================
+    await assertVisible(searchBox, 30000);
 
-    async openApprovalAction(action) {
 
-        console.log('');
-        console.log(
-            `Opening approval action dropdown: ${action}`
-        );
+    await searchBox.fill(
+      prNumber
+    );
 
 
-        const dropdown =
-            this.page.locator(
-                this.clickApprovalsDropdown
-            );
+    console.log(
+      `Searching for PR Number: ${prNumber}`
+    );
 
 
-        await dropdown.waitFor({
-            state: 'visible',
-            timeout: 15000
-        });
+    // =========================================================
+    // Wait for task
+    //
+    // This is important for second/subsequent approvers.
+    // The task may take a few seconds to be created.
+    // =========================================================
 
+    const task =
+      this.page.locator(
+        this.clickTask
+      );
 
-        await dropdown.click();
 
+    console.log(
+      `Waiting for approval task for ${prNumber}...`
+    );
 
-        // ---------------------------------------------------------
-        // Select action from menu
-        // ---------------------------------------------------------
 
-        const approvalAction =
-            this.page.getByRole(
-                'menuitem',
-                {
-                    name: action,
-                    exact: true
-                }
-            );
+    await assertVisible(task, 30000);
 
 
-        await approvalAction.waitFor({
-            state: 'visible',
-            timeout: 10000
-        });
+    await assertEnabled(task, 30000);
 
 
-        await approvalAction.click();
+    await task.click();
 
 
-        console.log(
-            `Approval Action Selected: ${action}`
-        );
-    }
+    console.log(
+      `PR ${prNumber} opened successfully`
+    );
+  }
 
 
-    // =============================================================
-    // Complete Mandatory Checklist
-    // =============================================================
+  // ===========================================================
+  // OPEN APPROVAL ACTION
+  // ===========================================================
 
-    async completeMandatoryChecklist() {
+  async openApprovalAction(action) {
 
-        console.log('');
-        console.log('==========================================');
-        console.log('Completing Mandatory Checklist');
-        console.log('==========================================');
+    console.log(
+      `Opening approval action: ${action}`
+    );
 
 
-        // ---------------------------------------------------------
-        // Find all checklist rows
-        // ---------------------------------------------------------
+    const dropdown =
+      this.page.locator(
+        this.clickApprovalsDropdown
+      );
 
-        const checklistRows =
-            this.page.locator(
-                this.checklistRows
-            );
 
+    await assertVisible(dropdown, 30000);
 
-        await checklistRows
-            .first()
-            .waitFor({
-                state: 'visible',
-                timeout: 15000
-            });
 
+    await assertEnabled(dropdown, 30000);
 
-        const rowCount =
-            await checklistRows.count();
 
+    await dropdown.click();
 
-        console.log(
-            `Total checklist rows: ${rowCount}`
-        );
 
+    console.log(
+      `Approval dropdown opened`
+    );
 
-        let mandatoryCount = 0;
 
-
-        // =========================================================
-        // Process each row
-        // =========================================================
-
-        for (
-            let i = 0;
-            i < rowCount;
-            i++
-        ) {
-
-            const row =
-                checklistRows.nth(i);
-
-
-            // -----------------------------------------------------
-            // Find mandatory remark inside current row
-            // -----------------------------------------------------
-
-            const mandatoryRemark =
-                row.locator(
-                    this.mandatoryRemarkInput
-                );
-
-
-            /*
-             * Mandatory detection:
-             *
-             * If this selector exists inside the row:
-             *
-             * input[placeholder="Remarks (required)"]
-             *
-             * then the checklist item is mandatory.
-             */
-
-            const isMandatory =
-                await mandatoryRemark.count() > 0;
-
-
-            // -----------------------------------------------------
-            // Optional checklist item
-            // -----------------------------------------------------
-
-            if (!isMandatory) {
-
-                console.log(
-                    `Checklist row ${i + 1}: OPTIONAL -> SKIPPED`
-                );
-
-                continue;
-            }
-
-
-            // -----------------------------------------------------
-            // Mandatory checklist item
-            // -----------------------------------------------------
-
-            mandatoryCount++;
-
-
-            console.log('');
-            console.log(
-                `Checklist row ${i + 1}: MANDATORY`
-            );
-
-
-            // =====================================================
-            // Checkbox
-            // =====================================================
-
-            const checkbox =
-                row.getByRole(
-                    'checkbox'
-                );
-
-
-            await checkbox.waitFor({
-                state: 'visible',
-                timeout: 10000
-            });
-
-
-            const currentState =
-                await checkbox.getAttribute(
-                    'aria-checked'
-                );
-
-
-            console.log(
-                `Current checkbox state: ${currentState}`
-            );
-
-
-            /*
-             * Only click if not already checked.
-             */
-
-            if (currentState !== 'true') {
-
-                await checkbox.scrollIntoViewIfNeeded();
-
-
-                await checkbox.click();
-
-
-                await expect(
-                    checkbox
-                ).toHaveAttribute(
-                    'aria-checked',
-                    'true'
-                );
-
-
-                console.log(
-                    'Checkbox selected successfully'
-                );
-            }
-            else {
-
-                console.log(
-                    'Checkbox already selected'
-                );
-            }
-
-
-            // =====================================================
-            // Mandatory Checklist Remark
-            // =====================================================
-
-            await mandatoryRemark
-                .scrollIntoViewIfNeeded();
-
-
-            await mandatoryRemark.waitFor({
-                state: 'visible',
-                timeout: 10000
-            });
-
-
-            /*
-             * This is the remark for the checklist item.
-             *
-             * It is NOT the final approval comment.
-             */
-
-            const checklistRemark =
-                'Verified and approved';
-
-
-            await mandatoryRemark.fill(
-                checklistRemark
-            );
-
-
-            // -----------------------------------------------------
-            // Verify actual input value
-            // -----------------------------------------------------
-
-            const actualRemark =
-                await mandatoryRemark.inputValue();
-
-
-            console.log(
-                `Checklist remark entered: "${actualRemark}"`
-            );
-
-
-            expect(
-                actualRemark.trim()
-            ).toBe(
-                checklistRemark
-            );
+    const approvalAction =
+      this.page.getByRole(
+        'menuitem',
+        {
+          name: action,
+          exact: true
         }
+      );
 
 
-        // =========================================================
-        // Mandatory Count Validation
-        // =========================================================
+    await assertVisible(approvalAction, 10000);
 
-        console.log('');
-        console.log(
-            `Mandatory checklist items found: ${mandatoryCount}`
-        );
 
+    await assertEnabled(approvalAction, 10000);
 
-        expect(
-            mandatoryCount
-        ).toBeGreaterThan(0);
 
+    await approvalAction.click();
 
-        // =========================================================
-        // Final Validation
-        // =========================================================
 
-        for (
-            let i = 0;
-            i < rowCount;
-            i++
-        ) {
+    console.log(
+      `Approval Action Selected: ${action}`
+    );
+  }
 
-            const row =
-                checklistRows.nth(i);
 
+  // ===========================================================
+  // COMPLETE MANDATORY CHECKLIST
+  // ===========================================================
 
-            const mandatoryRemark =
-                row.locator(
-                    this.mandatoryRemarkInput
-                );
+  async completeMandatoryChecklist() {
 
+    const checklistRows =
+      this.page.locator(
+        this.checklistRows
+      );
 
-            /*
-             * Optional row.
-             */
 
-            if (
-                await mandatoryRemark.count() === 0
-            ) {
-                continue;
-            }
+    await assertVisible(checklistRows.first(), 30000);
 
 
-            const checkbox =
-                row.getByRole(
-                    'checkbox'
-                );
+    const rowCount =
+      await checklistRows.count();
 
 
-            const checkboxState =
-                await checkbox.getAttribute(
-                    'aria-checked'
-                );
+    console.log(
+      `Total checklist rows: ${rowCount}`
+    );
 
 
-            const remarkValue =
-                await mandatoryRemark.inputValue();
+    let mandatoryCount = 0;
 
 
-            console.log(
-                `Validation row ${i + 1}: `
-                + `checkbox=${checkboxState}, `
-                + `remark="${remarkValue}"`
-            );
-
-
-            expect(
-                checkboxState
-            ).toBe('true');
-
-
-            expect(
-                remarkValue.trim()
-            ).not.toBe('');
-        }
-
-
-        console.log('');
-        console.log(
-            'All mandatory checklist items completed successfully'
-        );
-    }
-
-
-    // =============================================================
-    // Enter Approval Comments
-    // =============================================================
-
-    async enterApprovalComments(comments) {
-
-        console.log('');
-        console.log('==========================================');
-        console.log('Entering Approval Comments');
-        console.log('==========================================');
-
-
-        /*
-         * IMPORTANT:
-         *
-         * We are NOT looking for:
-         *
-         * input[placeholder="Remarks (required)"]
-         *
-         * We are looking for:
-         *
-         * <textarea
-         *     data-testid="input-checklist-comments"
-         * >
-         *
-         * This is the final approval comment.
-         */
-
-
-        const commentsBox =
-            this.page.locator(
-                this.approvalComments
-            );
-
-
-        // ---------------------------------------------------------
-        // Wait for textarea
-        // ---------------------------------------------------------
-
-        await commentsBox.waitFor({
-            state: 'visible',
-            timeout: 15000
-        });
-
-
-        // ---------------------------------------------------------
-        // Scroll page/modal to Comments
-        // ---------------------------------------------------------
-
-        console.log(
-            'Scrolling to Approval Comments...'
-        );
-
-
-        await commentsBox.scrollIntoViewIfNeeded();
-
-
-        // ---------------------------------------------------------
-        // Click textarea
-        // ---------------------------------------------------------
-
-        await commentsBox.click();
-
-
-        // ---------------------------------------------------------
-        // Clear existing value
-        // ---------------------------------------------------------
-
-        await commentsBox.fill('');
-
-
-        // ---------------------------------------------------------
-        // Enter approval comment
-        // ---------------------------------------------------------
-
-        console.log(
-            `Entering approval comment: "${comments}"`
-        );
-
-
-        await commentsBox.fill(
-            comments
-        );
-
-
-        // ---------------------------------------------------------
-        // Verify
-        // ---------------------------------------------------------
-
-        const actualValue =
-            await commentsBox.inputValue();
-
-
-        console.log(
-            `Actual approval comment: "${actualValue}"`
-        );
-
-
-        expect(
-            actualValue.trim()
-        ).toBe(
-            comments.trim()
-        );
-
-
-        console.log(
-            'Approval comment entered successfully'
-        );
-    }
-
-
-    // =============================================================
-    // Click Final Approve
-    // =============================================================
-
-    async clickFinalApprove() {
-
-        console.log('');
-        console.log(
-            'Looking for final Approve button...'
-        );
-
-
-        /*
-         * There can be multiple Approve buttons.
-         *
-         * We get all exact "Approve" buttons and
-         * click the last visible one.
-         */
-
-        const approveButtons =
-            this.page.getByRole(
-                'button',
-                {
-                    name: 'Approve',
-                    exact: true
-                }
-            );
-
-
-        const count =
-            await approveButtons.count();
-
-
-        console.log(
-            `Approve buttons found: ${count}`
-        );
-
-
-        if (count === 0) {
-
-            throw new Error(
-                'No Approve button found'
-            );
-        }
-
-
-        // ---------------------------------------------------------
-        // Search from last button
-        // ---------------------------------------------------------
-
-        for (
-            let i = count - 1;
-            i >= 0;
-            i--
-        ) {
-
-            const button =
-                approveButtons.nth(i);
-
-
-            if (
-                await button.isVisible()
-            ) {
-
-                await button.scrollIntoViewIfNeeded();
-
-
-                await button.click();
-
-
-                console.log(
-                    'Final Approve button clicked successfully'
-                );
-
-
-                return;
-            }
-        }
-
-
-        throw new Error(
-            'Visible final Approve button was not found'
-        );
-    }
-
-
-    // =============================================================
-    // Complete Approval
-    // =============================================================
-
-    async approvePR(
-        testData,
-        isFirstApprover
+    for (
+      let i = 0;
+      i < rowCount;
+      i++
     ) {
 
-        const action =
-            testData.approvers.action;
+      const row =
+        checklistRows.nth(i);
 
 
-        const comments =
-            testData.approvers.comments;
-
-
-        console.log('');
-        console.log('==========================================');
-        console.log(
-            `Starting Approval: ${action}`
-        );
-        console.log(
-            `First Approver: ${isFirstApprover}`
-        );
-        console.log(
-            `Approval Comment: ${comments}`
-        );
-        console.log('==========================================');
-
-
-        // =========================================================
-        // Open Approve Dropdown
-        // =========================================================
-
-        await this.openApprovalAction(
-            action
+      const mandatoryRemark =
+        row.locator(
+          this.mandatoryRemarkInput
         );
 
 
-        // =========================================================
-        // APPROVE
-        // =========================================================
+      // =======================================================
+      // Not mandatory
+      // =======================================================
 
-        if (action === 'Approve') {
+      if (
+        await mandatoryRemark.count() === 0
+      ) {
 
-
-            // =====================================================
-            // FIRST APPROVER
-            // =====================================================
-
-            if (isFirstApprover) {
-
-                console.log('');
-                console.log(
-                    'FIRST APPROVER'
-                );
+        continue;
+      }
 
 
-                console.log(
-                    'Completing mandatory checklist...'
-                );
+      mandatoryCount++;
 
 
-                /*
-                 * Automatically finds:
-                 *
-                 * Remarks (required)
-                 *
-                 * No hard-coded IDs.
-                 */
-
-                await this.completeMandatoryChecklist();
-            }
+      console.log(
+        `Processing mandatory checklist row ${i + 1}`
+      );
 
 
-            // =====================================================
-            // SECOND / SUBSEQUENT APPROVER
-            // =====================================================
+      // =======================================================
+      // Checkbox
+      // =======================================================
 
-            else {
-
-                console.log('');
-                console.log(
-                    'SUBSEQUENT APPROVER'
-                );
+      const checkbox =
+        row.getByRole(
+          'checkbox'
+        );
 
 
-                console.log(
-                    'Checklist already completed by first approver.'
-                );
+      await assertVisible(checkbox, 10000);
 
 
-                console.log(
-                    'Skipping checklist fields.'
-                );
-            }
+      const currentState =
+        await checkbox.getAttribute(
+          'aria-checked'
+        );
 
 
-            // =====================================================
-            // BOTH APPROVERS
-            // =====================================================
+      if (
+        currentState !== 'true'
+      ) {
 
-           
-
-            await this.enterApprovalComments(
-                comments
-            );
+        await checkbox.click();
 
 
-            // =====================================================
-            // Final Approve
-            // =====================================================
-
-            await this.clickFinalApprove();
-
-
-            console.log('');
-            console.log(
-                `Approval completed successfully for ${action}`
-            );
-        }
+        await assertHasAttribute(
+          checkbox,
+          'aria-checked',
+          'true'
+        );
+      }
 
 
-        // =========================================================
-        // Other Actions
-        // =========================================================
+      // =======================================================
+      // Mandatory Remark
+      // =======================================================
 
-        else {
-
-            console.log(
-                `Action "${action}" selected`
-            );
+      await assertVisible(mandatoryRemark, 10000);
 
 
-          
-        }
+      await mandatoryRemark.fill(
+        'Verified and approved'
+      );
+
+
+      await assertHasValue(
+        mandatoryRemark,
+        'Verified and approved'
+      );
     }
+
+
+    console.log(
+      `Mandatory checklist items processed: ${mandatoryCount}`
+    );
+
+
+    console.log(
+      'All mandatory checklist items completed successfully'
+    );
+  }
+
+
+  // ===========================================================
+  // CHECKLIST COMMENTS
+  // ===========================================================
+
+  async enterChecklistComments(comments) {
+
+    const commentsBox =
+      this.page.locator(
+        this.checklistComments
+      );
+
+
+    await assertVisible(commentsBox, 10000);
+
+
+    await commentsBox.fill(
+      comments
+    );
+
+
+    await assertHasValue(commentsBox, comments);
+
+
+    console.log(
+      `Checklist comment entered: "${comments}"`
+    );
+  }
+
+
+  // ===========================================================
+  // APPROVAL COMMENTS
+  // ===========================================================
+
+  async enterApprovalComments(comments) {
+
+    const commentsBox =
+      this.page.locator(
+        this.approvalComments
+      );
+
+
+    await assertVisible(commentsBox, 10000);
+
+
+    await commentsBox.fill(
+      comments
+    );
+
+
+    await assertHasValue(commentsBox, comments);
+
+
+    console.log(
+      `Approval comment entered: "${comments}"`
+    );
+  }
+
+
+  // ===========================================================
+  // CLICK APPROVE
+  // ===========================================================
+
+  async clickApproveButton() {
+
+    const approveButton =
+      this.page.locator(
+        this.approveButton
+      );
+
+
+    await assertVisible(approveButton, 30000);
+
+
+    await assertEnabled(approveButton, 30000);
+
+
+    await approveButton.click();
+
+
+    console.log(
+      'Approve button clicked successfully'
+    );
+  }
+
+
+  // ===========================================================
+  // CONFIRM REJECT / MORE INFO
+  // ===========================================================
+
+  async clickApprovalConfirmButton(action) {
+
+    const confirmButton =
+      this.page.locator(
+        this.approvalActionButton
+      );
+
+
+    await assertVisible(confirmButton, 30000);
+
+
+    await assertEnabled(confirmButton, 30000);
+
+
+    await confirmButton.click();
+
+
+    console.log(
+      `${action} confirmation button clicked successfully`
+    );
+  }
+
+
+  // ===========================================================
+  // APPROVE PR
+  // ===========================================================
+
+  async approvePR(
+    testData,
+    isFirstApprover
+  ) {
+
+    const comments =
+      testData.approvers.comments;
+
+
+    console.log(
+      `Processing Approve. First Approver: ${isFirstApprover}`
+    );
+
+
+    // =========================================================
+    // Open Approve
+    // =========================================================
+
+    await this.openApprovalAction(
+      'Approve'
+    );
+
+
+    // =========================================================
+    // First approver
+    //
+    // Complete checklist only for first approver.
+    // =========================================================
+
+    if (
+      isFirstApprover
+    ) {
+
+      console.log(
+        'First approver: completing checklist'
+      );
+
+
+      await this.completeMandatoryChecklist();
+
+
+      await this.enterChecklistComments(
+        comments
+      );
+
+    } else {
+
+      console.log(
+        'Subsequent approver: skipping checklist'
+      );
+    }
+
+
+    // =========================================================
+    // Approve
+    // =========================================================
+
+    await this.clickApproveButton();
+
+
+    console.log(
+      'Approval completed successfully'
+    );
+  }
+
+
+  // ===========================================================
+  // REJECT PR
+  // ===========================================================
+
+  async rejectPR(testData) {
+
+    const comments =
+      testData.approvers.comments;
+
+
+    console.log(
+      'Processing Reject'
+    );
+
+
+    // =========================================================
+    // Open Reject
+    // =========================================================
+
+    await this.openApprovalAction(
+      'Reject'
+    );
+
+
+    // =========================================================
+    // Enter rejection reason
+    // =========================================================
+
+    await this.enterApprovalComments(
+      comments
+    );
+
+
+    // =========================================================
+    // Confirm
+    // =========================================================
+
+    await this.clickApprovalConfirmButton(
+      'Reject'
+    );
+
+
+    console.log(
+      'Rejection completed successfully'
+    );
+  }
+
+
+  // ===========================================================
+  // REQUEST FOR MORE INFO
+  // ===========================================================
+
+  async requestMoreInfo(testData) {
+
+    const comments =
+      testData.approvers.comments;
+
+
+    console.log(
+      'Processing Request For More Info'
+    );
+
+
+    // =========================================================
+    // Open More Info
+    // =========================================================
+
+    await this.openApprovalAction(
+      'Request For More Info'
+    );
+
+
+    // =========================================================
+    // Enter comments
+    // =========================================================
+
+    await this.enterApprovalComments(
+      comments
+    );
+
+
+    // =========================================================
+    // Confirm
+    // =========================================================
+
+    await this.clickApprovalConfirmButton(
+      'Request For More Info'
+    );
+
+
+    console.log(
+      'Request for more information completed successfully'
+    );
+  }
 }
 
 

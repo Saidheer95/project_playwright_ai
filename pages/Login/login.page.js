@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { expect } = require('@playwright/test');
+const { assertVisible } = require('../../utils/assertions');
 
 const defaultCredentialsPath = path.join(
   __dirname,
@@ -37,13 +37,13 @@ class LoginPage {
   }
 
   async login(email, password) {
-    await expect(this.emailID).toBeVisible();
+    await assertVisible(this.emailID);
     await this.emailID.fill(email);
 
-    await expect(this.passwordInput).toBeVisible();
+    await assertVisible(this.passwordInput);
     await this.passwordInput.fill(password);
 
-    await expect(this.signIn).toBeVisible();
+    await assertVisible(this.signIn);
     await this.signIn.click();
 
     // await this.page.click(this.clickUser);

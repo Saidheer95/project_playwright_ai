@@ -1,4 +1,4 @@
-const{expect}=require('@playwright/test');
+const { assertVisible } = require('../../utils/assertions');
 class DirectBid {
     constructor(page) {
         this.page = page;
@@ -47,9 +47,9 @@ class DirectBid {
 
         await this.page.click(this.clickBid);
 
-        await expect(
+        await assertVisible(
             this.page.locator(this.clickCreate)
-        ).toBeVisible();
+        );
 
         await this.page.click(this.clickCreate);
 
@@ -57,7 +57,7 @@ class DirectBid {
             this.enterBidDescription
         );
 
-        await expect(descriptionInput).toBeVisible();
+        await assertVisible(descriptionInput);
 
         await descriptionInput.fill(
             testdata.directBid.bidDescription

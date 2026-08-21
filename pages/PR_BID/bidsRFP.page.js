@@ -1,9 +1,13 @@
+const {generateBidTestData } = require('../../utils/dataGenerator');
+
 class BidsRFP {
     constructor(page) {
         this.page = page;
         this.requisitionLink = '[data-testid="nav-requisitions"]';
         this.searchPR = '[data-testid="input-search-pr"]';
         this.selectBid = '[data-testid="select-bid-type"]';
+        this.selectOpenDate='[data-testid="input-bid-open-date"]';
+        this.selectCloseDate='[data-testid="input-bid-close-date"]';
         this.submitBid = '[data-testid="button-confirm-create-bid"]';
         this.tabSuppliers = '[data-testid="tab-suppliers"]';
         this.clickSupplier = '[data-testid="button-add-supplier"]';
@@ -31,6 +35,11 @@ class BidsRFP {
         this.finalBid = '[data-testid="button-publish-confirm"]';
     }
     async createBidRFP(testData) {
+        const dynamicData = generateBidTestData('RFP');
+
+        console.log('Generated RFP data:', dynamicData);
+
+
         await this.page.click(this.requisitionLink);
         await this.page.fill(this.searchPR, testData.addLine.prNumber);
         const clickButton = await this.page.getByRole('button', { name: testData.createBidRFP.type });
@@ -39,6 +48,9 @@ class BidsRFP {
         const options = await this.page.locator('[role="option"]').allTextContents();
         console.log(options);
         await this.page.getByText(testData.createBidRFP.bidname).click();
+        const dateOpen=await this.page.fill(this.selectOpenDate,dynamicData.openDate);
+        console.log("Open date:"+ dateOpen);
+        await this.page.fill(this.selectCloseDate,dynamicData.closeDate);
         await this.page.click(this.submitBid);
         await this.page.click(this.tabSuppliers);
         await this.page.click(this.clickSupplier)
@@ -65,7 +77,8 @@ class BidsRFP {
             // Print the available option text values to the console
             console.log(options1);
             await this.page.getByRole('option', { name: category }).click();
-            await this.page.fill(this.enterCriteriaDescription, testData.createBidRFP.criteriaDescription);
+            // await this.page.fill(this.enterCriteriaDescription, testData.createBidRFP.criteriaDescription);
+            await this.page.fill( this.enterCriteriaDescription, dynamicData.criteriaDescription);
             await this.page.click(this.selectCriteriaValue);
             await this.page.getByRole('option', { name: testData.createBidRFP.criteriaOption }).click();
             await this.page.click(this.selectValueType);
@@ -87,7 +100,8 @@ class BidsRFP {
         await this.page.click(this.clickAddTerms);
         await this.page.click(this.selectTermsType);
         await this.page.getByRole('option', { name: testData.createBidRFP.termsType }).click();
-        await this.page.fill(this.enterTermsDesciptin, testData.createBidRFP.termsDescription);
+        // await this.page.fill(this.enterTermsDesciptin, testData.createBidRFP.termsDescription);
+        await this.page.fill(this.enterTermsDesciptin,dynamicData.termsDescription);
         await this.page.click(this.clauseSubmit);
         await this.page.click(this.publishBid);
         await this.page.click(this.finalBid);

@@ -1,4 +1,4 @@
-const { test, expect } = require('@playwright/test');
+const { test } = require('@playwright/test');
 const Purchase_Requisitions = require('../../pages/PurchaseRequisition/purchaserequisition.page');
 const Add_Pr_Line = require('../../pages/PurchaseRequisition/addPrLine.page');
 const Submit_Approval = require('../../pages/PurchaseRequisition/purchasesubmit_approval.page');
@@ -23,7 +23,7 @@ test.describe('Purchase Requisition Page', () => {
         console.log(`Delivery Location: ${testData.createPurchaseRequisition.deliveryLocation}`);
 
         const add_pr_line_page = new Add_Pr_Line(page);
-        for (let i = 0; i < 1; i++) {
+        for (let i = 0; i < 3; i++) {
             console.log(`Adding line ${i + 1}`);
             await add_pr_line_page.addPurchaseRequisitionLine(testData);
             console.log(`Line ${i + 1} added`);

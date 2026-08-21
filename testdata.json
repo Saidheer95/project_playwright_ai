@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00563"
+        "prNumber": "PR_00597"
     },
     "approvers": {
-        "number": "PR_00563",
+        "number": "PO_00380",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -55,7 +55,6 @@
                 "Finance"
             ]
         },
-        "criteriaDescription": "Criteria Description",
         "criteriaOption": "Optional",
         "criteriaValueType": "Text",
         "criteriaWeight": "50",
@@ -64,6 +63,50 @@
         },
         "commercialTeam": {
             "name": "Sai"
+        },
+        "termsType": "Terms"
+    },
+    "createBidTender": {
+        "type": "Bid",
+        "bidname": "Tender",
+        "openDate": "2026-08-21T12:00",
+        "closeDate": "2026-08-22T14:27",
+        "envelopeOpenDate": "2026-08-23T14:30",
+        "supplier": {
+            "name": [
+                "Demo",
+                "Tale industries",
+                "Sai Corporation"
+            ]
+        },
+        "criteriaCategory": {
+            "name": [
+                "Business",
+                "Finance"
+            ]
+        },
+        "criteriaDescription": "Criteria Description",
+        "criteriaOption": "Optional",
+        "criteriaValueType": "Text",
+        "criteriaWeight": "50",
+        "technicalTeam": {
+            "name": "Abhilash"
+        },
+        "technicalApproveTeam": {
+            "name": "Mounika"
+        },
+        "commercialTeam": {
+            "name": "Sai"
+        },
+        "commercialApproveTeam": {
+            "name": "Pavan"
+        },
+        "committeeTeam": {
+            "name": [
+                "Manjunath",
+                "Ashok",
+                "Manikanta"
+            ]
         },
         "termsType": "Terms",
         "termsDescription": "Payment Terms"
@@ -74,10 +117,10 @@
         "paymentTerms": "30 Days",
         "advancePayment": "10"
     },
-    "poApprover": {
-        "number": "",
-        "action": "Approve",
-        "comments": "Approved"
+    "purchaseOrder": {
+        "poNumber": "PO_00380",
+        "action": "Reject",
+        "comments": "Rejected"
     },
     "directBid": {
         "bidDescription": "Enter the bid description",

@@ -1,4 +1,4 @@
-const{test,expect}=require('@playwright/test');
+const { test } = require('@playwright/test');
 const Create_Bid_RFP=require('../../pages/PR_BID/bidsRFP.page');
 const {LoginPage,loadCredentials}=require('../../pages/Login/login.page');
 const testData=require('../../testdata.json');

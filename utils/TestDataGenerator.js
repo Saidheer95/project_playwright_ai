@@ -74,6 +74,59 @@ class TestDataGenerator {
     return text+ number;    
   }
 
+  // ============ PR-SPECIFIC RANDOM DATA ============
+
+  static randomPRDescription() {
+    const types = ['Software', 'Hardware', 'Services', 'Licenses', 'Infrastructure'];
+    const purposes = ['License renewal', 'New purchase', 'Replacement', 'Upgrade', 'Maintenance'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    const purpose = purposes[Math.floor(Math.random() * purposes.length)];
+    return `${type} purchase requisition - ${purpose} on ${new Date().toISOString().split('T')[0]}`;
+  }
+
+  static randomProductName() {
+    const products = [
+      '777 - Laptops',
+      '501 - Desktop Computers',
+      '502 - Monitors',
+      '503 - Keyboards',
+      '504 - Mice',
+      '505 - Printers',
+      '506 - Scanners',
+      '507 - Network Equipment',
+      '508 - Storage Devices',
+      '509 - Software Licenses'
+    ];
+    return products[Math.floor(Math.random() * products.length)];
+  }
+
+  static randomQuantity() {
+    return Math.floor(Math.random() * 20) + 1; // 1-20
+  }
+
+  static randomPrice() {
+    return (Math.random() * 5000 + 100).toFixed(2); // 100-5100
+  }
+
+  static randomUOM() {
+    const uoms = ['Each', 'Box', 'Pack', 'Set', 'Pair', 'Dozen'];
+    return uoms[Math.floor(Math.random() * uoms.length)];
+  }
+
+  static randomNeedByDate(daysFromNow = null) {
+    const date = new Date();
+    if (daysFromNow === null) {
+      daysFromNow = Math.floor(Math.random() * 30) + 1; // 1-30 days
+    }
+    date.setDate(date.getDate() + daysFromNow);
+    return date.toISOString().split('T')[0];
+  }
+
+  static randomDeliveryLocation() {
+    const locations = ['Hyderabad', 'Bangalore', 'Mumbai', 'Chennai', 'New Delhi', 'Pune', 'Ahmedabad'];
+    return locations[Math.floor(Math.random() * locations.length)];
+  }
+
 }
 
-module.exports = {TestDataGenerator,};
+module.exports = {TestDataGenerator};

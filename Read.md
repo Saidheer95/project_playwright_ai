@@ -44,7 +44,7 @@ This automation suite is structured to:
   - `pages/Approvals/`
   - `pages/PurchaseRequisition/`
 - `fixtures/` - JSON files containing reusable test data such as credentials and auction settings
-- `utils/` - helper modules such as `JsonWriter.js` and `TestDataGenerator.js`
+- `utils/` - helper modules such as `JsonWriter.js` and `TestDataGenerator1.js`
 - `reporter/` - custom reporting logic for metrics
 - `test-results/` - generated artifacts including screenshots, videos, and traces
 - `playwright-report/` - HTML report output for test execution

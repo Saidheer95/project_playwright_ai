@@ -1,3 +1,6 @@
+const {generateBidTestData } = require('../../utils/dataGenerator');
+
+
 class Bids {
     constructor(page) {
         // Store the Playwright page object for later use in methods
@@ -8,6 +11,11 @@ class Bids {
         this.searchPR = '[data-testid="input-search-pr"]';
         // Locator for the bid type dropdown selector
         this.selectBid = '[data-testid="select-bid-type"]';
+
+        this.selectOpenDate='[data-testid="input-bid-open-date"]';
+
+        this.selectCloseDate='[data-testid="input-bid-close-date"]';
+        
         // Locator for the create bid confirmation button
         this.submitBid = '[data-testid="button-confirm-create-bid"]';
         // Locator for the suppliers tab in the bid workflow
@@ -25,7 +33,7 @@ class Bids {
         // Locator for the clause type dropdown selector
         this.selectTermsType = '[data-testid="select-clause-type"]';
         // Locator for the clause description input field
-        this.enterTermsDesciptin = '[data-testid="input-clause-desc"]'
+        this.enterTermsDescipton = '[data-testid="input-clause-desc"]'
         // Locator for the submit clause button
         this.clauseSubmit = '[data-testid="button-submit-clause"]';
         // Locator for the publish bid button
@@ -35,6 +43,11 @@ class Bids {
     }
 
     async createBid(testData) {
+
+         const dynamicData = generateBidTestData('RFQ');
+
+        console.log('Generated RFP data:', dynamicData);
+
         // Click the requisitions navigation link to open the requisitions page
         await this.page.click(this.requisitionLink);
         // Fill the PR search field with the PR number from the test data
@@ -48,6 +61,8 @@ class Bids {
         const options = await this.page.locator('[role="option"]').allTextContents();
         // Print the available option text values to the console
         console.log(options);
+        await this.page.fill(this.selectOpenDate,dynamicData.openDate);
+        await this.page.fill(this.selectCloseDate,dynamicData.closeDate);
         // Select the bid type based on the bid name provided in test data
         await this.page.getByText(testData.createBidRFQ.bidname).click();
         // Click the button to submit the bid creation form
@@ -86,7 +101,7 @@ class Bids {
         // Select the specific terms type from the options using test data
         await this.page.getByRole('option', { name: testData.createBidRFQ.termsType }).click();
         // Fill the clause description field with the description from test data
-        await this.page.fill(this.enterTermsDesciptin, testData.createBidRFQ.termsDescription);
+        await this.page.fill(this.enterTermsDesciption,dynamicData.termsDescription);
         // Submit the newly added clause
         await this.page.click(this.clauseSubmit);
         // Click the publish bid button to begin publishing
