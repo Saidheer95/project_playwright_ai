@@ -2,7 +2,6 @@ const { expect } = require('@playwright/test');
 
 exports.vendorRfmiPage =
 
-
     class VendorRfmiPage {
 
         constructor(page) {
@@ -39,7 +38,6 @@ exports.vendorRfmiPage =
             this.TIN = 'input-tin';
             this.TaxEffectiveDate = 'input-tax-effective-date';
             this.saveButton = 'button-save-continue';
-
 
             this.contactsmodule = 'Contacts';
             this.addContactButton = 'button-add-contact';
@@ -91,7 +89,6 @@ exports.vendorRfmiPage =
             this.buttonSaveBank = 'button-save-bank';
             this.saveBankButton = 'button-save-continue';
 
-
             this.certificates = 'nav-step-certificates';
             this.docType = 'select-doc-type';
             this.expiryRequired = 'checkbox-expiry-required';
@@ -100,23 +97,22 @@ exports.vendorRfmiPage =
             this.certificateDetailsUpload = 'input-file-upload';
             this.saveDocumentButton = 'button-save-document';
             this.saveCertificateButton = 'button-save-continue';
-            this.reviewProfile = 'Review Profile';
+
+            this.reviewProfile = 'nav-step-review-profile';
             this.agreeTerms = 'checkbox-agree-terms';
-            this.submitRegistrationButton = 'button-submit-registration';
+            this.uploadSignButton = 'button-upload-doc';
             this.confirmSubmitButton = 'button-confirm-submit';
             this.menuprofile = 'button-user-menu';
             this.signOut = 'button-logout';
             this.viewAll = 'link-view-all-tasks';
             this.searchId = 'input-search-tasks';
             this.approveButtons = 'button-actions';
-            this.rfmi = 'button-more-info';
+            this.moreInfoButton = 'button-more-info';
+            this.approved1 = 'button-approve';
             this.comments = 'input-approval-comments';
             this.yesButton = 'button-approval-yes';
-            this.approved1='button-approve';
-        
-           
-
         }
+
         async goto() {
             await this.page.goto(this.url);
         }
@@ -191,14 +187,14 @@ exports.vendorRfmiPage =
             await this.page.waitForSelector('[role="option"]', { state: 'visible' });
             await this.page.getByRole('option', { name: authorizedSignatory }).click();
             await this.page.getByTestId(this.buttonSaveContact).click();
-
         }
+
         async saveAndContinueContacts() {
             await this.page.getByTestId(this.saveContactButton).click();
         }
 
         async scopeOfSupply(parentCategory, subCategory, parentCategoryType, serviceDescription, domesticExperience, internationalExperience) {
-
+            await this.page.getByTestId(this.scopeOfSupplyNav).click();
             await this.page.getByTestId(this.parentCategory).click();
             await this.page.waitForSelector('[role="option"]', { state: 'visible' });
             await this.page.getByRole('option', { name: new RegExp(parentCategory) }).click();
@@ -214,11 +210,10 @@ exports.vendorRfmiPage =
             await this.page.getByTestId(this.domesticExperience).fill(domesticExperience);
             await this.page.getByTestId(this.internationalExperience).fill(internationalExperience);
             await this.page.getByTestId(this.saveScopeButton).click();
-
         }
 
         async bankingDetails(bankDocumentType, docFilePath, bankName, bankBranchName, SWIFTCode, ABARoutingNumber, IFSCCode, bankAddress, beneficiaryName, bankAccountNumber, confirmAccountNumber, bankAccountType, street, beneficiaryAddress, bankCity, bankRegion, IBAN, bankPostalCode, bankCountry, bankCurrency) {
-
+            await this.page.getByTestId(this.banking).click()
             await this.page.getByTestId(this.addBankButton).click();
             await this.page.getByTestId(this.bankDocumentType).click();
             await this.page.waitForSelector('[role="option"]', { state: 'visible' });
@@ -257,8 +252,9 @@ exports.vendorRfmiPage =
             await this.page.getByTestId(this.buttonSaveBank).click();
             await this.page.getByTestId(this.saveBankButton).click();
         }
-        async certificateDetails(docType, expiryRequired, docExpiry, docRemarks, docFilePath) {
 
+        async certificateDetails(docType, expiryRequired, docExpiry, docRemarks, docFilePath) {
+            await this.page.getByTestId(this.certificates).click();
             await this.page.getByTestId(this.docType).click();
             await this.page.waitForSelector('[role="option"]', { state: 'visible' });
             await this.page.getByRole('option', { name: new RegExp(docType) }).click();
@@ -273,14 +269,19 @@ exports.vendorRfmiPage =
             await this.page.getByTestId(this.saveDocumentButton).click();
             await this.page.waitForTimeout(5000);
             await this.page.getByTestId(this.saveCertificateButton).click();
+        }
+
+        async reviewAndSubmitRegistration(docFilePath) {
+            await this.page.getByTestId(this.reviewProfile).click();
+            await this.page.getByRole('button', { name: 'Review Profile' }).click();
+            await this.page.waitForTimeout(5000);
+            await this.page.locator('[data-testid="button-upload-doc"] + input[type="file"]').setInputFiles('tests/Files/Review-Sign-Document (25).pdf');
             await this.page.getByTestId(this.agreeTerms).check();
-            await this.page.getByTestId(this.submitRegistrationButton).click();
+            await this.page.getByRole('button', { name: 'Submit for Approval' }).click();
             await this.page.getByTestId(this.confirmSubmitButton).click();
-            await this.page.waitForTimeout(10000);
         }
 
         async signOutAndSignIn(email1, password1) {
-
             await this.page.getByTestId(this.menuprofile).click();
             await this.page.getByTestId(this.signOut).click();
             await this.page.getByTestId(this.emailInput).fill(email1);
@@ -288,7 +289,7 @@ exports.vendorRfmiPage =
             await this.page.getByTestId(this.loginButton).click();
         }
 
-        async rfmiFlow(searchId, comments) {
+        async rfmi(searchId, comments) {
             await this.page.getByTestId(this.viewAll).click();
             await this.page.getByTestId(this.searchId).click();
             await this.page.getByPlaceholder('Search by Entity ID, Subject, Submitter...').fill(searchId);
@@ -296,55 +297,40 @@ exports.vendorRfmiPage =
             await this.page.locator('[data-testid^="task-subject-"]', { hasText: searchId }).click();
             await this.page.getByTestId(this.approveButtons).click();
 
-            await this.page.getByTestId(this.rfmi).click();
+            await this.page.getByRole('menuitem', { name: 'More Info Requested' }).click();
             await this.page.getByTestId(this.comments).fill(comments);
 
             await this.page.getByTestId(this.yesButton).click();
-            await this.page.waitForTimeout(10000);
-            await this.page.reload();
-        }
             
-        async signOutAndSignIn1(email,password)
-        {
+        }
+
+        async resubmitAfterRfmi(email, password) {
             await this.page.getByTestId(this.menuprofile).click();
             await this.page.getByTestId(this.signOut).click();
             await this.page.getByTestId(this.emailInput).fill(email);
             await this.page.getByTestId(this.passwordInput).fill(password);
             await this.page.getByTestId(this.loginButton).click();
-            await this.page.getByRole('link', { name: 'Review Profile' }).click();
-            await this.page.getByTestId(this.agreeTerms).check();
-            await this.page.getByTestId(this.submitRegistrationButton).click();
-            await this.page.getByTestId(this.confirmSubmitButton).click();
+            await this.page.getByTestId(this.reviewProfile).click();
+            await this.page.getByRole('button', { name: 'Review Profile' }).click();
             await this.page.waitForTimeout(5000);
-            await this.page.reload();
+            await this.page.locator('[data-testid="button-upload-doc"] + input[type="file"]').setInputFiles('tests/Files/Review-Sign-Document (25).pdf');
+            await this.page.getByTestId(this.agreeTerms).check();
+            await this.page.getByRole('button', { name: 'Submit for Approval' }).click();
+            await this.page.getByTestId(this.confirmSubmitButton).click();
+            
         }
-         async signOutAndSignIn2(email1, password1) {
 
-            await this.page.getByTestId(this.menuprofile).click();
-            await this.page.getByTestId(this.signOut).click();
-            await this.page.getByTestId(this.emailInput).fill(email1);
-            await this.page.getByTestId(this.passwordInput).fill(password1);
-            await this.page.getByTestId(this.loginButton).click();
-        }
-        
-        async approved(searchId,comments){
+        async approved(searchId, comments) {
             await this.page.getByTestId(this.viewAll).click();
             await this.page.getByTestId(this.searchId).click();
             await this.page.getByPlaceholder('Search by Entity ID, Subject, Submitter...').fill(searchId);
             await this.page.waitForTimeout(1000);
             await this.page.locator('[data-testid^="task-subject-"]', { hasText: searchId }).click();
             await this.page.getByTestId(this.approveButtons).click();
-             
+
             await this.page.getByTestId(this.approved1).click();
             await this.page.getByTestId(this.comments).fill(comments);
 
             await this.page.getByTestId(this.yesButton).click();
-
         }
-        
-
-
-
- }
-
-    
+    }
