@@ -1,93 +1,93 @@
-const { test, expect } = require('@playwright/test');
+const { test } = require('@playwright/test');
 const { nonPoInvoiceRfmi } = require('./pages/nonporfmipage');
 const { nonPoInvoiceRfmiData } = require('./data/nonporfmidata');
 
-test('Create Non-PO Invoice - Request For More Info Flow', async ({ page }) => {
-    test.setTimeout(300000);
+const invoiceNumber = nonPoInvoiceRfmiData.invoiceHeader.invoiceNumber;
 
-    const invoiceFlow = new nonPoInvoiceRfmi(page);
+test.describe.serial('Non-PO Invoice RFMI and Approval Workflow', () => {
+    let invoiceFlow;
 
-    await invoiceFlow.goto();
+    test.beforeEach(async ({ page }) => {
+        invoiceFlow = new nonPoInvoiceRfmi(page);
+        await invoiceFlow.goto();
+    });
 
-    await invoiceFlow.login(
-        nonPoInvoiceRfmiData.validLogin.email,
-        nonPoInvoiceRfmiData.validLogin.password
-    );
-    await page.waitForTimeout(5000);
+    test('Create Non-PO Invoice', async ({ page }) => {
+        await invoiceFlow.login(
+            nonPoInvoiceRfmiData.validLogin.email,
+            nonPoInvoiceRfmiData.validLogin.password
+        );
+       
 
-    await invoiceFlow.navigateToCreateNonPoInvoice();
-    await page.waitForTimeout(2000);
+        await invoiceFlow.navigateToCreateNonPoInvoice();
+        
 
-    await invoiceFlow.invoiceHeaderDetails(
-        nonPoInvoiceRfmiData.invoiceHeader.vendorName,
-        nonPoInvoiceRfmiData.invoiceHeader.department,
-        nonPoInvoiceRfmiData.invoiceHeader.businessEntity,
-        nonPoInvoiceRfmiData.invoiceHeader.invoiceNumber,
-        nonPoInvoiceRfmiData.invoiceHeader.invoiceDate,
-        nonPoInvoiceRfmiData.invoiceHeader.currency,
-        nonPoInvoiceRfmiData.invoiceHeader.paymentTerms,
-        nonPoInvoiceRfmiData.invoiceHeader.description,
-        nonPoInvoiceRfmiData.invoiceHeader.reason,
-        nonPoInvoiceRfmiData.invoiceHeader.budget
-    );
-    await page.waitForTimeout(2000);
+        await invoiceFlow.invoiceHeaderDetails(
+            nonPoInvoiceRfmiData.invoiceHeader.vendorName,
+            nonPoInvoiceRfmiData.invoiceHeader.department,
+            nonPoInvoiceRfmiData.invoiceHeader.businessEntity,
+            nonPoInvoiceRfmiData.invoiceHeader.invoiceNumber,
+            nonPoInvoiceRfmiData.invoiceHeader.invoiceDate,
+            nonPoInvoiceRfmiData.invoiceHeader.currency,
+            nonPoInvoiceRfmiData.invoiceHeader.paymentTerms,
+            nonPoInvoiceRfmiData.invoiceHeader.description,
+            nonPoInvoiceRfmiData.invoiceHeader.reason,
+            nonPoInvoiceRfmiData.invoiceHeader.budget
+        );
+        
 
-    const invoiceNumber = nonPoInvoiceRfmiData.invoiceHeader.invoiceNumber;
-    console.log('Captured invoiceNumber:', invoiceNumber);
+        console.log('Captured invoiceNumber:', invoiceNumber);
 
-    await invoiceFlow.uploadInvoiceDocument(nonPoInvoiceRfmiData.docFilePath);
+        await invoiceFlow.uploadInvoiceDocument(nonPoInvoiceRfmiData.docFilePath);
+        
 
-    await invoiceFlow.addLineItem(
-        nonPoInvoiceRfmiData.lineItem.itemName,
-        nonPoInvoiceRfmiData.lineItem.lineDeliveryDate,
-        nonPoInvoiceRfmiData.lineItem.lineUom,
-        nonPoInvoiceRfmiData.lineItem.lineOrderQty,
-        nonPoInvoiceRfmiData.lineItem.lineUnitCost,
-        nonPoInvoiceRfmiData.lineItem.lineTaxRate
-    );
-    await page.waitForTimeout(2000);
+        await invoiceFlow.addLineItem(
+            nonPoInvoiceRfmiData.lineItem.itemName,
+            nonPoInvoiceRfmiData.lineItem.lineDeliveryDate,
+            nonPoInvoiceRfmiData.lineItem.lineUom,
+            nonPoInvoiceRfmiData.lineItem.lineOrderQty,
+            nonPoInvoiceRfmiData.lineItem.lineUnitCost,
+            nonPoInvoiceRfmiData.lineItem.lineTaxRate
+        );
+        
 
-    await invoiceFlow.submitInvoice();
-    await page.waitForTimeout(3000);
+        await invoiceFlow.submitInvoice();
+        
+    });
 
-    // Log in as approver
-    await invoiceFlow.login1(
-        nonPoInvoiceRfmiData.userLogin.email1,
-        nonPoInvoiceRfmiData.userLogin.password1
-    );
-    await page.waitForTimeout(3000);
+    test('Approver logs in and requests more info', async ({ page }) => {
+        await invoiceFlow.login(
+            nonPoInvoiceRfmiData.approvers.email1,
+            nonPoInvoiceRfmiData.approvers.password1
+        );
+        
 
-    // Approver requests more info
-    await invoiceFlow.nonPoRfmi(
-        invoiceNumber,
-        nonPoInvoiceRfmiData.nonPoRfmi.comments
-    );
-    await page.waitForTimeout(3000);
+        await invoiceFlow.rfmi(
+            invoiceNumber,
+            nonPoInvoiceRfmiData.nonPoRfmi.comments
+        );
+    });
 
-    // Log back in as vendor to resubmit
-    await invoiceFlow.signInAndSignOut(
-        nonPoInvoiceRfmiData.validLogin.email,
-        nonPoInvoiceRfmiData.validLogin.password
-    );
-    await page.waitForTimeout(3000);
+    test('Vendor resubmits invoice after RFMI', async ({ page }) => {
+        await invoiceFlow.login(
+            nonPoInvoiceRfmiData.validLogin.email,
+            nonPoInvoiceRfmiData.validLogin.password
+        );
+        
 
-    // Vendor resubmits the invoice
-    await invoiceFlow.nonPoRfmi1(
-        invoiceNumber,
-        nonPoInvoiceRfmiData.nonPoRfmi.comments
-    );
-    await page.waitForTimeout(3000);
+        await invoiceFlow.resubmitInvoice(invoiceNumber);
+    });
 
-    // Log back in as approver
-    await invoiceFlow.signInAndSignOut1(
-        nonPoInvoiceRfmiData.userLogin.email1,
-        nonPoInvoiceRfmiData.userLogin.password1
-    );
-    await page.waitForTimeout(3000);
+    test('Approver approves resubmitted invoice', async ({ page }) => {
+        await invoiceFlow.login(
+            nonPoInvoiceRfmiData.approvers.email1,
+            nonPoInvoiceRfmiData.approvers.password1
+        );
+        
 
-    // Approver approves the resubmitted invoice
-    await invoiceFlow.nonPoRfmi2(
-        invoiceNumber,
-        nonPoInvoiceRfmiData.nonPoRfmi2.comments2
-    );
+        await invoiceFlow.approved(
+            invoiceNumber,
+            nonPoInvoiceRfmiData.nonPoApproved.comments
+        );
+    });
 });
