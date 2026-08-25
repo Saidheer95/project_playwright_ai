@@ -2,18 +2,20 @@ const { test } = require('@playwright/test');
 const { vendorRejectedPage } = require('./pages/vendorrejectedpage');
 const { VendorRejectedData } = require('./data/vendorrejecteddata');
 
-test('Vendor Registration - Rejection Flow', async ({ page }) => {
-    test.setTimeout(180000);
+let vendor;
+let companyName;
 
-    const vendor = new vendorRejectedPage(page);
-
+test.beforeEach('Setup - Login and get company name', async ({ page }) => {
+    vendor = new vendorRejectedPage(page);
     await vendor.goto();
     await vendor.login(
         VendorRejectedData.validUser.email,
         VendorRejectedData.validUser.password
     );
+});
 
-    const companyName = (await vendor.page.getByTestId('text-company-welcome').textContent()).trim();
+test('Vendor Registration - Company Details', async () => {
+    companyName = (await vendor.page.getByTestId('text-company-welcome').textContent())?.trim() ?? '';
     console.log('Captured company name:', companyName);
 
     await vendor.companyDetails(
@@ -41,9 +43,9 @@ test('Vendor Registration - Rejection Flow', async ({ page }) => {
         VendorRejectedData.companydetails.TIN,
         VendorRejectedData.companydetails.TaxEffectiveDate
     );
+});
 
-    await page.waitForTimeout(7000);
-
+test('Vendor Registration - Contacts Details', async () => {
     for (const contact of VendorRejectedData.contactdetails) {
         await vendor.contactDetails(
             contact.contactName,
@@ -56,13 +58,13 @@ test('Vendor Registration - Rejection Flow', async ({ page }) => {
             contact.isPrimary,
             contact.authorizedSignatory
         );
-        await page.waitForTimeout(1000);
+        await vendor.page.waitForTimeout(1000);
     }
 
     await vendor.saveAndContinueContacts();
+});
 
-    await page.waitForTimeout(4000);
-
+test('Vendor Registration - Scope of Supply', async () => {
     await vendor.scopeOfSupply(
         VendorRejectedData.scopeOfSupply.parentCategory,
         VendorRejectedData.scopeOfSupply.subCategory,
@@ -71,9 +73,9 @@ test('Vendor Registration - Rejection Flow', async ({ page }) => {
         VendorRejectedData.scopeOfSupply.domesticExperience,
         VendorRejectedData.scopeOfSupply.internationalExperience
     );
+});
 
-    await page.waitForTimeout(3000);
-
+test('Vendor Registration - Banking Details', async () => {
     await vendor.bankingDetails(
         VendorRejectedData.bankingDetails.bankDocumentType,
         VendorRejectedData.bankingDetails.docFilePath,
@@ -96,27 +98,32 @@ test('Vendor Registration - Rejection Flow', async ({ page }) => {
         VendorRejectedData.bankingDetails.bankCountry,
         VendorRejectedData.bankingDetails.bankCurrency
     );
+});
 
-    await page.waitForTimeout(5000);
-
+test('Vendor Registration - Certificates', async () => {
     await vendor.certificateDetails(
         VendorRejectedData.certifications.docType,
         VendorRejectedData.certifications.expiryRequired,
         VendorRejectedData.certifications.docExpiry,
         VendorRejectedData.certifications.docRemarks,
-        VendorRejectedData.bankingDetails.docFilePath
+        VendorRejectedData.certifications.docFilePath
     );
+});
 
-    await page.waitForTimeout(3000);
+test('Vendor Registration - Review and Submit', async () => {
+    await vendor.reviewAndSubmitRegistration();
+});
+
+test('Vendor Registration - Rejection Workflow', async () => {
+    companyName = (await vendor.page.getByTestId('text-company-welcome').textContent())?.trim() ?? '';
+    console.log('Captured company name:', companyName);
 
     await vendor.signOutAndSignIn(
         VendorRejectedData.approvers.email1,
         VendorRejectedData.approvers.password1
     );
 
-    await page.waitForTimeout(3000);
-
-    await vendor.rejectedFlow(
+    await vendor.rejected(
         companyName,
         VendorRejectedData.vendorRejected.comments
     );
