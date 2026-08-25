@@ -16,9 +16,14 @@ test.describe('Create Bid Flow', () => {
         await create_direct_bid_page.bidDirectPage(testdata);
         const add_bid_line_page = new Add_Line(page);     
         await add_bid_line_page.addBidLine(testdata);
-        console.log("Bid Line added successfully with the following details:");
-        console.log(`Quantity: ${testdata.addLine.quantity}`);
-        console.log(`Price: ${testdata.addLine.price}`);
+        console.log("Bid Line added successfully");
+        // console.log(`Quantity: ${testdata.addLine.quantity}`);
+        // console.log(`Price: ${testdata.addLine.price}`);
 
+    });
+
+    test.afterEach(async({page})=>{
+        const loginPage = new LoginPage(page);
+        loginPage.logout();
     });
 })

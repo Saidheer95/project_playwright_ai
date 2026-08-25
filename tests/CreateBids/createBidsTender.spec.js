@@ -14,7 +14,6 @@ test.describe('Create Bid Flow',()=>{
         const create_bid_page=new Create_Bid_Tender(page);
         await create_bid_page.createBidTender(testData);
         console.log(`Searching for PR Number: ${testData.addLine.prNumber}`);
-        console.log(`Creating Bid of type: ${testData.createBidTender.type} with name: ${testData.createBidTender.bidname}`);
     });
 })
 

@@ -10,8 +10,7 @@ class ApprovalPage {
 
   constructor(page) {
 
-    this.page =
-      page;
+    this.page = page;
 
 
     // =========================================================
@@ -31,18 +30,13 @@ class ApprovalPage {
       '[data-testid="task-entity-0"]';
 
 
-    // =========================================================
-    // Approval Action
-    // =========================================================
+   
 
     this.clickApprovalsDropdown =
       '[data-testid="button-approve"]';
 
 
-    // =========================================================
-    // Checklist
-    // =========================================================
-
+   
     this.checklistRows =
       '[data-testid^="row-approval-checklist-"]';
 
@@ -377,10 +371,6 @@ class ApprovalPage {
   }
 
 
-  // ===========================================================
-  // CHECKLIST COMMENTS
-  // ===========================================================
-
   async enterChecklistComments(comments) {
 
     const commentsBox =
@@ -405,11 +395,7 @@ class ApprovalPage {
     );
   }
 
-
-  // ===========================================================
-  // APPROVAL COMMENTS
-  // ===========================================================
-
+ 
   async enterApprovalComments(comments) {
 
     const commentsBox =
@@ -435,10 +421,6 @@ class ApprovalPage {
   }
 
 
-  // ===========================================================
-  // CLICK APPROVE
-  // ===========================================================
-
   async clickApproveButton() {
 
     const approveButton =
@@ -460,11 +442,6 @@ class ApprovalPage {
       'Approve button clicked successfully'
     );
   }
-
-
-  // ===========================================================
-  // CONFIRM REJECT / MORE INFO
-  // ===========================================================
 
   async clickApprovalConfirmButton(action) {
 
@@ -657,3 +634,5 @@ class ApprovalPage {
 
 
 module.exports = ApprovalPage;
+
+

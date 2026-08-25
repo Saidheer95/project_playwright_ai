@@ -52,13 +52,9 @@ class AddPrLinePage {
         await this.selectDropdown();
         await this.page.fill(this.priceInput, String(testData.addLine.price));
 
-        // Click Save + wait for API response (better than networkidle)
-        await Promise.all([
-            this.page.waitForResponse(resp =>
-                resp.url().includes('/line') && resp.status() === 200 // adjust API if needed
-            ),
-            await this.page.click(this.saveLineButton)
-        ]);
+     
+        await this.page.click(this.saveLineButton)
+
 
         // Wait for success toast
         const toast = this.page.locator('text=Line item added successfully');
@@ -70,3 +66,4 @@ class AddPrLinePage {
 }
 
 module.exports = AddPrLinePage;
+

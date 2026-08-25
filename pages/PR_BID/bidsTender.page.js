@@ -2,9 +2,7 @@ class BidsTender {
     constructor(page) {
         this.page = page;
         this.requisitionLink = '[data-testid="nav-requisitions"]';
-        // Locator for the PR search input field
         this.searchPR = '[data-testid="input-search-pr"]';
-        // Locator for the bid type dropdown selector
         this.selectBid = '[data-testid="select-bid-type"]';
         this.selectOpenDate = '[data-testid="input-bid-open-date"]';
         this.selectCloseDate = '[data-testid="input-bid-close-date"]';

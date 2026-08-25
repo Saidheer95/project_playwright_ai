@@ -1,4 +1,6 @@
 const {generateBidTestData } = require('../../utils/dataGenerator');
+const JsonWriter = require('../../utils/JsonWriter');
+
 
 
 class Bids {
@@ -33,16 +35,20 @@ class Bids {
         // Locator for the clause type dropdown selector
         this.selectTermsType = '[data-testid="select-clause-type"]';
         // Locator for the clause description input field
-        this.enterTermsDescipton = '[data-testid="input-clause-desc"]'
+        this.enterTermsDesciption = '[data-testid="input-clause-desc"]'
         // Locator for the submit clause button
         this.clauseSubmit = '[data-testid="button-submit-clause"]';
         // Locator for the publish bid button
         this.publishBid = '[data-testid="button-publish-bid"]';
         // Locator for the final publish confirmation button
         this.finalBid = '[data-testid="button-publish-confirm"]';
+        //Read the Bid Number
+        this.bidNumber='[data-testid="text-bid-number"]';
     }
 
     async createBid(testData) {
+
+        await this.page.pause();
 
          const dynamicData = generateBidTestData('RFQ');
 
@@ -109,4 +115,18 @@ class Bids {
         // Confirm the final publish action for the bid
         await this.page.click(this.finalBid);
     }
-} module.exports = Bids;
+
+  //   async getBIDNumber() {
+  //   const bidNumberLocator = this.page.locator(this.bidNumber);
+
+  //   const bidNumberText = await bidNumberLocator.textContent();
+  //   const bidNumber = bidNumberText?.trim();
+
+  //   if (!bidNumber) {
+  //     throw new Error('PO number was not found on the page.');
+  //   }
+
+  //   JsonWriter.saveBIDNumber(bidNumber);
+  //   return bidNumber;
+  // }
+}module.exports = Bids;

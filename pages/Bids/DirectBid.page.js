@@ -1,4 +1,6 @@
 const { assertVisible } = require('../../utils/assertions');
+const {generateBidTestData } = require('../../utils/dataGenerator');
+
 class DirectBid {
     constructor(page) {
         this.page = page;
@@ -42,6 +44,9 @@ class DirectBid {
     }
 
     async bidDirectPage(testdata) {
+
+        const dynamicData = generateBidTestData('RFQ');
+
 
         await this.page.pause();
 
@@ -110,10 +115,11 @@ class DirectBid {
         // console.log(`Bid Open Date Time : ${formattedDateTime}`);
 
         await this.page.click(this.selectBidOpenDate);
-        await this.page.fill(this.selectBidOpenDate, testdata.directBid.enterOpendate);
+        await this.page.fill(this.selectBidOpenDate,dynamicData.openDate);
+
 
         await this.page.click(this.selectBidCloseDate);
-        await this.page.fill(this.selectBidCloseDate,testdata.directBid.enterClosedDate);     
+        await this.page.fill(this.selectBidCloseDate,dynamicData.closeDate);     
         
         // Payment Terms
         await this.selectDropdown(

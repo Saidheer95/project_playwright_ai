@@ -1,6 +1,8 @@
 const { test } = require('@playwright/test');
 const Create_Bid=require('../../pages/PR_BID/bidsRFQ.page');
 const {LoginPage,loadCredentials}=require('../../pages/Login/login.page');
+const JsonWriter = require('../../utils/JsonWriter');
+
 const testData=require('../../testdata.json');
 test.describe('Create Bid Flow',()=>{
     test.beforeEach(async({page})=>{
@@ -14,6 +16,10 @@ test.describe('Create Bid Flow',()=>{
         const create_bid_page=new Create_Bid(page);
         await create_bid_page.createBid(testData);
         console.log(`Searching for PR Number: ${testData.addLine.prNumber}`);
-        console.log(`Creating Bid of type: ${testData.createBid.type} with name: ${testData.createBid.bidname}`);
+         // Read Bid Number and save to JSON
+        const bidNumber = await create_bid_page.getBIDNumber();
+
+        console.log(`PO Number Saved: ${bidNumber}`);
+
     });
 })

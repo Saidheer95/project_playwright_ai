@@ -1,4 +1,4 @@
-class TestDataGenerator {
+class TestDataGenerator1 {
   static usedPhoneNumbers = new Set();
   static usedEmails = new Set();
   static usedCompanyNames = new Set();
@@ -129,4 +129,4 @@ class TestDataGenerator {
 
 }
 
-module.exports = {TestDataGenerator};
+module.exports = {TestDataGenerator1};

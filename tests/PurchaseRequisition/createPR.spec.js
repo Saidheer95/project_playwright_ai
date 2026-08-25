@@ -3,44 +3,81 @@ const Purchase_Requisitions = require('../../pages/PurchaseRequisition/purchaser
 const Add_Pr_Line = require('../../pages/PurchaseRequisition/addPrLine.page');
 const Submit_Approval = require('../../pages/PurchaseRequisition/purchasesubmit_approval.page');
 const { LoginPage, loadCredentials } = require('../../pages/Login/login.page');
-const JsonWriter = require('../../utils/JsonWriter');
 const testData = require('../../testdata.json');
 
 test.describe('Purchase Requisition Page', () => {
-    test.beforeEach(async ({ page }) => {
-        const loginPage = new LoginPage(page);      
-        const credentials = loadCredentials();
-        await page.goto(credentials.loginUrl);
-        await loginPage.login(credentials.requestor.email, credentials.requestor.password);
-    });
-
     test('should create a new purchase requisition', async ({ page }) => {
-        const purchase_requisition_page = new Purchase_Requisitions(page);
-        await purchase_requisition_page.createPurchaseRequisitionPage(testData);
+        const loginPage = new LoginPage(page);
+        const credentials = loadCredentials();
+        let loggedIn = false;
 
-        console.log("Purchase Requisition created successfully with the following details:");
-        console.log(`Description: ${testData.createPurchaseRequisition.prDescription}`);
-        console.log(`Delivery Location: ${testData.createPurchaseRequisition.deliveryLocation}`);
+        try {
+            console.log('========================================');
+            console.log('        PR CREATION STARTED');
+            console.log('========================================');
+            console.log(`Opening login URL: ${credentials.loginUrl}`);
 
-        const add_pr_line_page = new Add_Pr_Line(page);
-        for (let i = 0; i < 3; i++) {
-            console.log(`Adding line ${i + 1}`);
-            await add_pr_line_page.addPurchaseRequisitionLine(testData);
-            console.log(`Line ${i + 1} added`);
+            await page.goto(credentials.loginUrl);
+
+            await loginPage.login(
+                credentials.requestor.email,
+                credentials.requestor.password
+            );
+
+            loggedIn = true;
+            console.log('Requestor login successful.');
+
+            const purchaseRequisitionPage = new Purchase_Requisitions(page);
+            const addPrLinePage = new Add_Pr_Line(page);
+            const submitApprovalPage = new Submit_Approval(page);
+
+            console.log('Creating Purchase Requisition...');
+
+            await purchaseRequisitionPage.createPurchaseRequisitionPage(testData);
+
+            console.log('Purchase Requisition created successfully.');
+
+            for (let i = 0; i < 3; i++) {
+                console.log(`Adding line ${i + 1}...`);
+
+                await addPrLinePage.addPurchaseRequisitionLine(testData);
+
+                console.log(`Line ${i + 1} added successfully.`);
+            }
+
+            console.log('All PR lines added successfully.');
+            console.log('Submitting PR for approval...');
+
+            await submitApprovalPage.submitForApproval();
+
+            console.log('PR submitted for approval successfully.');
+
+            const prNumber = await purchaseRequisitionPage.getPRNumber();
+
+            console.log(`PR Number confirmed: ${prNumber}`);
+
+            if (!prNumber) {
+                throw new Error('PR Number was not generated.');
+            }
+
+            console.log(`Valid PR Number received: ${prNumber}`);
+            console.log(`PR ${prNumber} is ready for approval flow.`);
+
+            console.log('========================================');
+            console.log(`PR CREATION COMPLETED: ${prNumber}`);
+            console.log('========================================');
+
+        } finally {
+            if (loggedIn) {
+                console.log('Logging out requestor...');
+
+                try {
+                    await loginPage.logout();
+                    console.log('Requestor logged out successfully.');
+                } catch (logoutError) {
+                    console.error(`Logout failed: ${logoutError.message}`);
+                }
+            }
         }
-        console.log("Purchase Requisition Line added successfully with the following details:");
-        console.log(`Quantity: ${testData.createPurchaseRequisition.quantity}`);
-        console.log(`Price: ${testData.createPurchaseRequisition.price}`);
-
-        const submit_approval_page = new Submit_Approval(page);
-        await submit_approval_page.submitForApproval();
-
-
-        // Read PR Number and save to JSON
-        const prNumber = await purchase_requisition_page.getPRNumber();
-
-        console.log(`PR Number Saved: ${prNumber}`);
-
-
     });
-})
+});

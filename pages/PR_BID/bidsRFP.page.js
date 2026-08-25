@@ -29,7 +29,7 @@ class BidsRFP {
         this.searchCommercialTeam = '[data-testid="input-search-member-commercial-review-team"]';
         this.clickAddTerms = '[data-testid="button-add-clause"]';
         this.selectTermsType = '[data-testid="select-clause-type"]';
-        this.enterTermsDesciptin = '[data-testid="input-clause-desc"]'
+        this.enterTermsDesciption= '[data-testid="input-clause-desc"]'
         this.clauseSubmit = '[data-testid="button-submit-clause"]';
         this.publishBid = '[data-testid="button-publish-bid"]';
         this.finalBid = '[data-testid="button-publish-confirm"]';
