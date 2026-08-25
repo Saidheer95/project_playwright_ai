@@ -2,18 +2,21 @@ const { test } = require('@playwright/test');
 const { vendorApprovedPage } = require('./pages/vendorapprovedpage');
 const { VendorApprovedData } = require('./data/vendorapproveddata');
 
-test('Vendor Registration - End to End', async ({ page }) => {
+let vendor;
+let companyName;
 
-    const vendor = new vendorApprovedPage(page);
-
+test.beforeEach('Setup - Login and get company name', async ({ page }) => {   
+    vendor = new vendorApprovedPage(page);
     await vendor.goto();
     await vendor.login(
         VendorApprovedData.validUser.email,
         VendorApprovedData.validUser.password
     );
+});
 
- const companyName = (await vendor.page.getByTestId('text-company-welcome').textContent()).trim();
-   console.log('Captured company name:', companyName);
+test('Vendor Registration - Company Details', async () => {
+    companyName = (await vendor.page.getByTestId('text-company-welcome').textContent())?.trim() ?? '';
+    console.log('Captured company name:', companyName);
 
     await vendor.companyDetails(
         VendorApprovedData.companydetails.address1,
@@ -41,8 +44,9 @@ test('Vendor Registration - End to End', async ({ page }) => {
         VendorApprovedData.companydetails.TaxEffectiveDate
     );
 
-    await page.waitForTimeout(7000);
+});
 
+test('Vendor Registration - Contacts Details', async () => {
     for (const contact of VendorApprovedData.contactdetails) {
         await vendor.contactDetails(
             contact.contactName,
@@ -55,13 +59,14 @@ test('Vendor Registration - End to End', async ({ page }) => {
             contact.isPrimary,
             contact.authorizedSignatory
         );
-        await page.waitForTimeout(1000);
+        await vendor.page.waitForTimeout(1000);
     }
 
     await vendor.saveAndContinueContacts();
-    
-    await page.waitForTimeout(4000);
-    
+   
+});
+
+test('Vendor Registration - Scope of Supply', async () => {
     await vendor.scopeOfSupply(
         VendorApprovedData.scopeOfSupply.parentCategory,
         VendorApprovedData.scopeOfSupply.subCategory,
@@ -71,8 +76,9 @@ test('Vendor Registration - End to End', async ({ page }) => {
         VendorApprovedData.scopeOfSupply.internationalExperience
     );
 
-    await page.waitForTimeout(3000);
+});
 
+test('Vendor Registration - Banking Details', async () => {
     await vendor.bankingDetails(
         VendorApprovedData.bankingDetails.bankDocumentType,
         VendorApprovedData.bankingDetails.docFilePath,
@@ -95,29 +101,35 @@ test('Vendor Registration - End to End', async ({ page }) => {
         VendorApprovedData.bankingDetails.bankCountry,
         VendorApprovedData.bankingDetails.bankCurrency
     );
+});
 
-    await page.waitForTimeout(5000);
-
+test('Vendor Registration - Certificates', async () => {
     await vendor.certificateDetails(
         VendorApprovedData.certifications.docType,
         VendorApprovedData.certifications.expiryRequired,
         VendorApprovedData.certifications.docExpiry,
         VendorApprovedData.certifications.docRemarks,
-        VendorApprovedData.bankingDetails.docFilePath
+        VendorApprovedData.certifications.docFilePath
     );
 
-    await page.waitForTimeout(3000);
-  
-    await vendor.signOutAndSignIn(
-         VendorApprovedData.approvers.email1,
-         VendorApprovedData.approvers.password1,
+});
 
+test('Vendor Registration - Review and Submit', async () => {
+    await vendor.reviewAndSubmitRegistration();
+});
+
+test('Vendor Registration - Approval Workflow', async () => {
+    companyName = (await vendor.page.getByTestId('text-company-welcome').textContent())?.trim() ?? '';
+    console.log('Captured company name:', companyName);
+
+    await vendor.signOutAndSignIn(
+        VendorApprovedData.approvers.email1,
+        VendorApprovedData.approvers.password1
     );
    
-    await page.waitForTimeout(3000);
 
     await vendor.approved(
         companyName,
-        VendorApprovedData.vendorApproved.comments,
+        VendorApprovedData.vendorApproved.comments
     );
 });
