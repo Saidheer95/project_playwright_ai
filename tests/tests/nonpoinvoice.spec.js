@@ -1,22 +1,26 @@
-const { test, expect } = require('@playwright/test');
+const { test } = require('@playwright/test');
 const { nonPoInvoice } = require('./pages/nonpopage');
 const { nonPoInvoiceData } = require('./data/nonpodata');
 
-test('Create Non-PO Invoice - End to End', async ({ page }) => {
-    test.setTimeout(300000);
+const invoiceNumber = nonPoInvoiceData.invoiceHeader.invoiceNumber;
 
-    const invoiceFlow = new nonPoInvoice(page);
+test.describe.serial('Non-PO Invoice Approval Workflow', () => {
+let invoiceFlow;
 
+test.beforeEach(async ({ page }) => {
+    invoiceFlow = new nonPoInvoice(page);
     await invoiceFlow.goto();
+});
 
+test('Create Non-PO Invoice', async ({ page }) => {
     await invoiceFlow.login(
         nonPoInvoiceData.validLogin.email,
         nonPoInvoiceData.validLogin.password
     );
-    await page.waitForTimeout(5000);
+    
 
     await invoiceFlow.navigateToCreateNonPoInvoice();
-    await page.waitForTimeout(2000);
+   
 
     await invoiceFlow.invoiceHeaderDetails(
         nonPoInvoiceData.invoiceHeader.vendorName,
@@ -30,9 +34,8 @@ test('Create Non-PO Invoice - End to End', async ({ page }) => {
         nonPoInvoiceData.invoiceHeader.reason,
         nonPoInvoiceData.invoiceHeader.budget
     );
-    await page.waitForTimeout(2000);
+    
 
-    const invoiceNumber = nonPoInvoiceData.invoiceHeader.invoiceNumber;
     console.log('Captured invoiceNumber:', invoiceNumber);
 
     await invoiceFlow.uploadInvoiceDocument(nonPoInvoiceData.docFilePath);
@@ -45,19 +48,20 @@ test('Create Non-PO Invoice - End to End', async ({ page }) => {
         nonPoInvoiceData.lineItem.lineUnitCost,
         nonPoInvoiceData.lineItem.lineTaxRate
     );
-    await page.waitForTimeout(2000);
+    
 
     await invoiceFlow.submitInvoice();
-    await page.waitForTimeout(3000);
+});
 
-    await invoiceFlow.login1(
-        nonPoInvoiceData.userLogin.email1,
-        nonPoInvoiceData.userLogin.password1
+test('Approver logs in and approves invoice', async ({ page }) => {
+    await invoiceFlow.login(
+        nonPoInvoiceData.approvers.email1,
+        nonPoInvoiceData.approvers.password1
     );
-    await page.waitForTimeout(3000);
 
-    await invoiceFlow.nonPoapproved(
+    await invoiceFlow.approved(
         invoiceNumber,
         nonPoInvoiceData.nonPoApproved.comments
     );
+});
 });
