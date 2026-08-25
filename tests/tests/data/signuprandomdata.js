@@ -2,7 +2,6 @@ const { faker } = require('@faker-js/faker');
 
 const validCountries = [
     'India',
-    'United States',
     'USA',
     'UAE',
     'Saudi Arabia',
@@ -17,7 +16,6 @@ const validCountries = [
 const randomCountry = validCountries[Math.floor(Math.random() * validCountries.length)];
 const Countries = [
     'India',
-    'United States',
     'USA',
     'UAE',
     'Saudi Arabia',

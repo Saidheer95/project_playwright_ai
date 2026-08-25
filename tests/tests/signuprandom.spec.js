@@ -15,7 +15,6 @@ test('Signup with random faker data', async ({ page }) => {
     // console.log('Designation:', signUpRandomData.validUser.designation);
     // console.log('Department :', signUpRandomData.validUser.department);
     // console.log('====================================');
-
     const signUpRandomPage = new signUpRandom(page);
     await signUpRandomPage.goto();
     await signUpRandomPage.signup(
