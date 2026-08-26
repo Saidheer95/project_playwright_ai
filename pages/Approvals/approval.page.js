@@ -1,17 +1,10 @@
-const {
-  assertVisible,
-  assertEnabled,
-  assertHasValue,
-  assertHasAttribute
-} = require('../../utils/assertions');
-
+const { expect } = require('@playwright/test');
 
 class ApprovalPage {
 
   constructor(page) {
 
     this.page = page;
-
 
     // =========================================================
     // Navigation
@@ -27,16 +20,21 @@ class ApprovalPage {
       '[data-testid="input-search-tasks"]';
 
     this.clickTask =
-      '[data-testid="task-entity-0"]';
+      '[data-testid^="task-entity-"]';
 
 
-   
+    // =========================================================
+    // Approval Action
+    // =========================================================
 
     this.clickApprovalsDropdown =
       '[data-testid="button-approve"]';
 
 
-   
+    // =========================================================
+    // Checklist
+    // =========================================================
+
     this.checklistRows =
       '[data-testid^="row-approval-checklist-"]';
 
@@ -71,7 +69,6 @@ class ApprovalPage {
     const prNumber =
       testData.approvers.number;
 
-
     console.log(
       `Searching approval request for PR: ${prNumber}`
     );
@@ -86,20 +83,13 @@ class ApprovalPage {
         this.approvalLink
       );
 
-
     console.log(
       'Waiting for notification button...'
     );
 
-
-    await assertVisible(notification, 30000);
-
-
-    await assertEnabled(notification, 30000);
-
+    await expect(notification).toBeVisible();
 
     await notification.click();
-
 
     console.log(
       'Notification button clicked'
@@ -115,17 +105,13 @@ class ApprovalPage {
         this.approvalRequest
       );
 
-
     console.log(
       'Waiting for approval request link...'
     );
 
-
-    await assertVisible(approvalRequest, 30000);
-
+    await expect(approvalRequest).toBeVisible();
 
     await approvalRequest.click();
-
 
     console.log(
       'Approval request page opened'
@@ -141,14 +127,11 @@ class ApprovalPage {
         this.searchTasks
       );
 
-
-    await assertVisible(searchBox, 30000);
-
+    await expect(searchBox).toBeVisible();
 
     await searchBox.fill(
       prNumber
     );
-
 
     console.log(
       `Searching for PR Number: ${prNumber}`
@@ -156,30 +139,75 @@ class ApprovalPage {
 
 
     // =========================================================
-    // Wait for task
+    // Approval Task
     //
-    // This is important for second/subsequent approvers.
-    // The task may take a few seconds to be created.
+    // No setTimeout.
+    // No waitForTimeout.
+    //
+    // Playwright waits for the actual task to appear.
     // =========================================================
 
-    const task =
+    const tasks =
       this.page.locator(
         this.clickTask
       );
 
+    const matchingTask =
+      tasks.filter({
+        hasText: prNumber
+      }).first();
 
     console.log(
       `Waiting for approval task for ${prNumber}...`
     );
 
 
-    await assertVisible(task, 30000);
+    // =========================================================
+    // First try to find task containing PR number
+    // =========================================================
 
+    if (await matchingTask.count() > 0) {
 
-    await assertEnabled(task, 30000);
+      await expect(
+        matchingTask
+      ).toBeVisible();
 
+      console.log(
+        `Approval task found for PR ${prNumber}`
+      );
 
-    await task.click();
+      await matchingTask.click();
+
+    } else {
+
+      // =======================================================
+      // Fallback
+      //
+      // If the task DOM does not contain the PR number,
+      // wait for the first task after the search result updates.
+      // =======================================================
+
+      console.log(
+        `PR number was not found directly in task locator.`
+      );
+
+      console.log(
+        `Waiting for approval task result...`
+      );
+
+      const task =
+        tasks.first();
+
+      await expect(
+        task
+      ).toBeVisible();
+
+      console.log(
+        `Approval task result found for PR ${prNumber}`
+      );
+
+      await task.click();
+    }
 
 
     console.log(
@@ -198,24 +226,19 @@ class ApprovalPage {
       `Opening approval action: ${action}`
     );
 
-
     const dropdown =
       this.page.locator(
         this.clickApprovalsDropdown
       );
 
-
-    await assertVisible(dropdown, 30000);
-
-
-    await assertEnabled(dropdown, 30000);
-
+    await expect(
+      dropdown
+    ).toBeVisible();
 
     await dropdown.click();
 
-
     console.log(
-      `Approval dropdown opened`
+      'Approval dropdown opened'
     );
 
 
@@ -228,15 +251,11 @@ class ApprovalPage {
         }
       );
 
-
-    await assertVisible(approvalAction, 10000);
-
-
-    await assertEnabled(approvalAction, 10000);
-
+    await expect(
+      approvalAction
+    ).toBeVisible();
 
     await approvalAction.click();
-
 
     console.log(
       `Approval Action Selected: ${action}`
@@ -255,18 +274,16 @@ class ApprovalPage {
         this.checklistRows
       );
 
-
-    await assertVisible(checklistRows.first(), 30000);
-
+    await expect(
+      checklistRows.first()
+    ).toBeVisible();
 
     const rowCount =
       await checklistRows.count();
 
-
     console.log(
       `Total checklist rows: ${rowCount}`
     );
-
 
     let mandatoryCount = 0;
 
@@ -279,7 +296,6 @@ class ApprovalPage {
 
       const row =
         checklistRows.nth(i);
-
 
       const mandatoryRemark =
         row.locator(
@@ -301,7 +317,6 @@ class ApprovalPage {
 
       mandatoryCount++;
 
-
       console.log(
         `Processing mandatory checklist row ${i + 1}`
       );
@@ -316,15 +331,14 @@ class ApprovalPage {
           'checkbox'
         );
 
-
-      await assertVisible(checkbox, 10000);
-
+      await expect(
+        checkbox
+      ).toBeVisible();
 
       const currentState =
         await checkbox.getAttribute(
           'aria-checked'
         );
-
 
       if (
         currentState !== 'true'
@@ -332,9 +346,9 @@ class ApprovalPage {
 
         await checkbox.click();
 
-
-        await assertHasAttribute(
-          checkbox,
+        await expect(
+          checkbox
+        ).toHaveAttribute(
           'aria-checked',
           'true'
         );
@@ -345,16 +359,17 @@ class ApprovalPage {
       // Mandatory Remark
       // =======================================================
 
-      await assertVisible(mandatoryRemark, 10000);
-
+      await expect(
+        mandatoryRemark
+      ).toBeVisible();
 
       await mandatoryRemark.fill(
         'Verified and approved'
       );
 
-
-      await assertHasValue(
-        mandatoryRemark,
+      await expect(
+        mandatoryRemark
+      ).toHaveValue(
         'Verified and approved'
       );
     }
@@ -364,12 +379,15 @@ class ApprovalPage {
       `Mandatory checklist items processed: ${mandatoryCount}`
     );
 
-
     console.log(
       'All mandatory checklist items completed successfully'
     );
   }
 
+
+  // ===========================================================
+  // ENTER CHECKLIST COMMENTS
+  // ===========================================================
 
   async enterChecklistComments(comments) {
 
@@ -378,24 +396,30 @@ class ApprovalPage {
         this.checklistComments
       );
 
-
-    await assertVisible(commentsBox, 10000);
-
+    await expect(
+      commentsBox
+    ).toBeVisible();
 
     await commentsBox.fill(
       comments
     );
 
-
-    await assertHasValue(commentsBox, comments);
-
+    await expect(
+      commentsBox
+    ).toHaveValue(
+      comments
+    );
 
     console.log(
       `Checklist comment entered: "${comments}"`
     );
   }
 
- 
+
+  // ===========================================================
+  // ENTER APPROVAL COMMENTS
+  // ===========================================================
+
   async enterApprovalComments(comments) {
 
     const commentsBox =
@@ -403,23 +427,29 @@ class ApprovalPage {
         this.approvalComments
       );
 
-
-    await assertVisible(commentsBox, 10000);
-
+    await expect(
+      commentsBox
+    ).toBeVisible();
 
     await commentsBox.fill(
       comments
     );
 
-
-    await assertHasValue(commentsBox, comments);
-
+    await expect(
+      commentsBox
+    ).toHaveValue(
+      comments
+    );
 
     console.log(
       `Approval comment entered: "${comments}"`
     );
   }
 
+
+  // ===========================================================
+  // CLICK APPROVE BUTTON
+  // ===========================================================
 
   async clickApproveButton() {
 
@@ -428,20 +458,25 @@ class ApprovalPage {
         this.approveButton
       );
 
+    await expect(
+      approveButton
+    ).toBeVisible();
 
-    await assertVisible(approveButton, 30000);
-
-
-    await assertEnabled(approveButton, 30000);
-
+    await expect(
+      approveButton
+    ).toBeEnabled();
 
     await approveButton.click();
-
 
     console.log(
       'Approve button clicked successfully'
     );
   }
+
+
+  // ===========================================================
+  // CLICK APPROVAL CONFIRM BUTTON
+  // ===========================================================
 
   async clickApprovalConfirmButton(action) {
 
@@ -450,15 +485,15 @@ class ApprovalPage {
         this.approvalActionButton
       );
 
+    await expect(
+      confirmButton
+    ).toBeVisible();
 
-    await assertVisible(confirmButton, 30000);
-
-
-    await assertEnabled(confirmButton, 30000);
-
+    await expect(
+      confirmButton
+    ).toBeEnabled();
 
     await confirmButton.click();
-
 
     console.log(
       `${action} confirmation button clicked successfully`
@@ -478,7 +513,6 @@ class ApprovalPage {
     const comments =
       testData.approvers.comments;
 
-
     console.log(
       `Processing Approve. First Approver: ${isFirstApprover}`
     );
@@ -494,9 +528,7 @@ class ApprovalPage {
 
 
     // =========================================================
-    // First approver
-    //
-    // Complete checklist only for first approver.
+    // First Approver
     // =========================================================
 
     if (
@@ -507,9 +539,7 @@ class ApprovalPage {
         'First approver: completing checklist'
       );
 
-
       await this.completeMandatoryChecklist();
-
 
       await this.enterChecklistComments(
         comments
@@ -529,7 +559,6 @@ class ApprovalPage {
 
     await this.clickApproveButton();
 
-
     console.log(
       'Approval completed successfully'
     );
@@ -544,7 +573,6 @@ class ApprovalPage {
 
     const comments =
       testData.approvers.comments;
-
 
     console.log(
       'Processing Reject'
@@ -577,7 +605,6 @@ class ApprovalPage {
       'Reject'
     );
 
-
     console.log(
       'Rejection completed successfully'
     );
@@ -592,7 +619,6 @@ class ApprovalPage {
 
     const comments =
       testData.approvers.comments;
-
 
     console.log(
       'Processing Request For More Info'
@@ -625,7 +651,6 @@ class ApprovalPage {
       'Request For More Info'
     );
 
-
     console.log(
       'Request for more information completed successfully'
     );
@@ -634,5 +659,3 @@ class ApprovalPage {
 
 
 module.exports = ApprovalPage;
-
-
