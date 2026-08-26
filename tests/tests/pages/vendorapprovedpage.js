@@ -221,7 +221,7 @@ exports.vendorApprovedPage=
             await this.page.waitForSelector('[role="option"]', { state: 'visible' });
             await this.page.getByRole('option', { name: new RegExp(bankDocumentType) }).click();
 
-            await this.page.locator(this.inputFileUpload).setInputFiles('tests/Files/Bank_Letter_NovaSpark 1.pdf');
+            await this.page.locator(this.inputFileUpload).setInputFiles('tests\tests\files\profile icon 2.jpg');
             await this.page.waitForTimeout(5000);
             // await this.page.getByTestId(this.bankCountry).click();
             // await this.page.waitForSelector('[role="option"]', { state: 'visible' });
