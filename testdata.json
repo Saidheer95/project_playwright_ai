@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00713"
+        "prNumber": "PR_00720"
     },
     "approvers": {
-        "number": "PR_00713",
+        "number": "PR_00720",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -112,8 +112,8 @@
         "termsDescription": "Payment Terms"
     },
     "supplierBid": {
-        "bidNumber": "RFQ260193",
-        "typeAction":"Participating",
+        "bidNumber": "RFQ260197",
+        "typeAction": "Participating",
         "buyerNotes": "Acknowledge by the supplier"
     },
     "createPurchaseOrder": {
