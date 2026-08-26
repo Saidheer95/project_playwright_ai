@@ -48,9 +48,7 @@ class Bids {
 
     async createBid(testData) {
 
-        await this.page.pause();
-
-         const dynamicData = generateBidTestData('RFQ');
+        const dynamicData = generateBidTestData('RFQ');
 
         console.log('Generated RFP data:', dynamicData);
 
