@@ -1,5 +1,140 @@
-
 {
-  "auctionType": "Forward Auction",
-  "auctionName": "Test Auction"
+    "createAuction": {
+        "auctionType": "Forward Auction",
+        "auctionName": "Test Auction",
+        "templateName": "Forward Auction template",
+        "UOM": "KG",
+        "delivery": "Hyderabad"
+    },
+    "createPurchaseRequisition": {
+        "prDescription": "pr description related to the purchase requisition",
+        "deliveryLocation": "Hyderabad",
+        "needByDate": "2024-06-30",
+        "businessEntity": "Entity1",
+        "buyer": "Harshit",
+        "currency": "INR",
+        "budget": "BUDGET_SAOP_009_08_87"
+    },
+    "addLine": {
+        "productName": "777 - Laptops",
+        "lineType": "Service",
+        "quantity": "2",
+        "uom": "Each",
+        "price": "234.67",
+        "prNumber": "PR_00703"
+    },
+    "approvers": {
+        "number": "PR_00703",
+        "action": "Approve",
+        "comments": "Approved"
+    },
+    "createBidRFQ": {
+        "type": "Bid",
+        "bidname": "RFQ",
+        "supplier": {
+            "name": [
+                "Demo",
+                "Tale industries"
+            ]
+        },
+        "termsType": "Terms",
+        "termsDescription": "Payment Terms"
+    },
+    "createBidRFP": {
+        "type": "Bid",
+        "bidname": "RFP",
+        "supplier": {
+            "name": [
+                "Demo",
+                "Tale industries"
+            ]
+        },
+        "criteriaCategory": {
+            "name": [
+                "Business",
+                "Finance"
+            ]
+        },
+        "criteriaOption": "Optional",
+        "criteriaValueType": "Text",
+        "criteriaWeight": "50",
+        "technicalTeam": {
+            "name": "Abhilash"
+        },
+        "commercialTeam": {
+            "name": "Sai"
+        },
+        "termsType": "Terms"
+    },
+    "createBidTender": {
+        "type": "Bid",
+        "bidname": "Tender",
+        "openDate": "2026-08-21T12:00",
+        "closeDate": "2026-08-22T14:27",
+        "envelopeOpenDate": "2026-08-23T14:30",
+        "supplier": {
+            "name": [
+                "Demo",
+                "Tale industries",
+                "Sai Corporation"
+            ]
+        },
+        "criteriaCategory": {
+            "name": [
+                "Business",
+                "Finance"
+            ]
+        },
+        "criteriaDescription": "Criteria Description",
+        "criteriaOption": "Optional",
+        "criteriaValueType": "Text",
+        "criteriaWeight": "50",
+        "technicalTeam": {
+            "name": "Abhilash"
+        },
+        "technicalApproveTeam": {
+            "name": "Mounika"
+        },
+        "commercialTeam": {
+            "name": "Sai"
+        },
+        "commercialApproveTeam": {
+            "name": "Pavan"
+        },
+        "committeeTeam": {
+            "name": [
+                "Manjunath",
+                "Ashok",
+                "Manikanta"
+            ]
+        },
+        "termsType": "Terms",
+        "termsDescription": "Payment Terms"
+    },
+    "supplierBid": {
+        "bidNumber": "",
+        "buyerNotes": "Acknowledge by the supplier"
+    },
+    "createPurchaseOrder": {
+        "type": "PO",
+        "supplierName": "Sai Corporation",
+        "paymentTerms": "30 Days",
+        "advancePayment": "10"
+    },
+    "purchaseOrder": {
+        "poNumber": "PO_00382",
+        "action": "Reject",
+        "comments": "Rejected"
+    },
+    "directBid": {
+        "bidDescription": "Enter the bid description",
+        "bidType": "RFQ",
+        "businessEntity": "Entity1",
+        "buyer": "Harshit",
+        "currency": "INR",
+        "enterOpendate": "2026-07-23T17:10",
+        "enterClosedDate": "2026-07-26T17:27",
+        "paymentTerms": "30 Days",
+        "deliveryLocation": "Chennai"
+    }
 }

@@ -14,7 +14,7 @@ const validCountries = [
 ];
 
 const validLegalEntities = [
-    'CO-Op Society', 'Freelance', 'Freelancer',
+    'CO-Op Society','Freelancer',
     'HUF', 'Individual',
     'Limited Liability', 'Others', 'Partnership',
     'Proprietorship', 'PSU',
@@ -66,7 +66,7 @@ const randomTypeOfDocument = pick(typeOfDocument);
 exports.VendorApprovedData = {
 
     validUser: {
-        email: 'Amelia25@yahoo.com',
+        email: 'Luke7@gmail.com',
         password: 'Test@123',
     },
 

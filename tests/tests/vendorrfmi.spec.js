@@ -2,18 +2,20 @@ const { test } = require('@playwright/test');
 const { vendorRfmiPage } = require('./pages/vendorrfmipage');
 const { VendorRfmiData } = require('./data/vendorrfmidata');
 
-test('Vendor Registration - Request For More Info Flow', async ({ page }) => {
-    
+let vendor;
+let companyName;
 
-    const vendor = new vendorRfmiPage(page);
-
+test.beforeEach('Setup - Login and get company name', async ({ page }) => {
+    vendor = new vendorRfmiPage(page);
     await vendor.goto();
     await vendor.login(
         VendorRfmiData.validUser.email,
         VendorRfmiData.validUser.password
     );
+});
 
-    const companyName = (await vendor.page.getByTestId('text-company-welcome').textContent()).trim();
+test('Vendor Registration - Company Details', async () => {
+    companyName = (await vendor.page.getByTestId('text-company-welcome').textContent())?.trim() ?? '';
     console.log('Captured company name:', companyName);
 
     await vendor.companyDetails(
@@ -41,9 +43,9 @@ test('Vendor Registration - Request For More Info Flow', async ({ page }) => {
         VendorRfmiData.companydetails.TIN,
         VendorRfmiData.companydetails.TaxEffectiveDate
     );
+});
 
-    await page.waitForTimeout(7000);
-
+test('Vendor Registration - Contacts Details', async () => {
     for (const contact of VendorRfmiData.contactdetails) {
         await vendor.contactDetails(
             contact.contactName,
@@ -56,13 +58,13 @@ test('Vendor Registration - Request For More Info Flow', async ({ page }) => {
             contact.isPrimary,
             contact.authorizedSignatory
         );
-        await page.waitForTimeout(1000);
+        await vendor.page.waitForTimeout(1000);
     }
 
     await vendor.saveAndContinueContacts();
+});
 
-    await page.waitForTimeout(4000);
-
+test('Vendor Registration - Scope of Supply', async () => {
     await vendor.scopeOfSupply(
         VendorRfmiData.scopeOfSupply.parentCategory,
         VendorRfmiData.scopeOfSupply.subCategory,
@@ -71,9 +73,9 @@ test('Vendor Registration - Request For More Info Flow', async ({ page }) => {
         VendorRfmiData.scopeOfSupply.domesticExperience,
         VendorRfmiData.scopeOfSupply.internationalExperience
     );
+});
 
-    await page.waitForTimeout(3000);
-
+test('Vendor Registration - Banking Details', async () => {
     await vendor.bankingDetails(
         VendorRfmiData.bankingDetails.bankDocumentType,
         VendorRfmiData.bankingDetails.docFilePath,
@@ -96,49 +98,51 @@ test('Vendor Registration - Request For More Info Flow', async ({ page }) => {
         VendorRfmiData.bankingDetails.bankCountry,
         VendorRfmiData.bankingDetails.bankCurrency
     );
+});
 
-    await page.waitForTimeout(5000);
-
+test('Vendor Registration - Certificates', async () => {
     await vendor.certificateDetails(
         VendorRfmiData.certifications.docType,
         VendorRfmiData.certifications.expiryRequired,
         VendorRfmiData.certifications.docExpiry,
         VendorRfmiData.certifications.docRemarks,
-        VendorRfmiData.bankingDetails.docFilePath
+        VendorRfmiData.certifications.docFilePath
     );
+});
 
-    await page.waitForTimeout(3000);
+test('Vendor Registration - Review and Submit', async () => {
+    await vendor.reviewAndSubmitRegistration();
+});
+
+test('Vendor Registration - RFMI and Approval Workflow', async () => {
 
     await vendor.signOutAndSignIn(
         VendorRfmiData.approvers.email1,
         VendorRfmiData.approvers.password1
     );
 
-    await page.waitForTimeout(2000);
-
-    await vendor.rfmiFlow(
+    await vendor.rfmi(
         companyName,
         VendorRfmiData.vendorRfmi.comments
     );
+});
 
-    await page.waitForTimeout(2000);
+test('Vendor Registration - Resubmit After RFMI', async () => {
+    
+    companyName = (await vendor.page.getByTestId('text-company-welcome').textContent())?.trim() ?? '';
+    console.log('Captured company name:', companyName);
 
-    await vendor.signOutAndSignIn1(
+    await vendor.resubmitAfterRfmi(
         VendorRfmiData.validUser.email,
         VendorRfmiData.validUser.password
-    );     
-
-    await page.waitForTimeout(2000);
-
-    
-    await vendor.signOutAndSignIn2(
+    );
+    await vendor.signOutAndSignIn(
         VendorRfmiData.approvers.email1,
         VendorRfmiData.approvers.password1
-    );     
+    );
 
     await vendor.approved(
-       companyName,
+        companyName,
         VendorRfmiData.vendorApproved.comments
-
-    )
+    );
 });

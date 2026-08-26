@@ -18,7 +18,6 @@ class signUpRandom {
         this.termsCheckbox         = 'checkbox-terms';
         this.signupButton          = 'button-signup';
     }
-
     async goto() {
         await this.page.goto(this.url);
     }

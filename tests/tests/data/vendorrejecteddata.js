@@ -14,7 +14,7 @@ const validCountries = [
 ];
 
 const validLegalEntities = [
-    'CO-Op Society', 'Freelance', 'Freelancer',
+    'CO-Op Society','Freelancer',
     'HUF', 'Individual',
     'Limited Liability', 'Others', 'Partnership',
     'Proprietorship', 'PSU',
@@ -42,6 +42,7 @@ const bankcurrencies = ['USD', 'INR', 'AED', 'EUR'];
 const bankAccountTypes = ['Current Account', 'Savings Account'];
 const bankDocumentTypes = ['BANK_DOCUMENT', 'Cancelled Cheque'];
 const typeOfDocument = ['Trade License', 'Chamber of Commerce Membership', 'VAT Certificate', 'Company Profile', 'Memorandum of Association', 'List of Employees'];
+
 function pick(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -63,10 +64,11 @@ const randomBankCurrency = pick(bankcurrencies);
 const randomBankAccountType = pick(bankAccountTypes);
 const randomBankDocumentType = pick(bankDocumentTypes);
 const randomTypeOfDocument = pick(typeOfDocument);
+
 exports.VendorRejectedData = {
 
     validUser: {
-        email: 'Cicero_Hane@yahoo.com',
+        email: 'Erich_Farrell@yahoo.com',
         password: 'Test@123',
     },
 
