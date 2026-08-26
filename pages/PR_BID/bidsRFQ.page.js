@@ -29,8 +29,6 @@ class Bids{
 
         console.log('Generated RFP data:',dynamicData);
 
-        await this.page.pause();
-
         await this.page.click(this.requisitionLink);
 
         await this.page.fill(this.searchPR,testData.addLine.prNumber);
