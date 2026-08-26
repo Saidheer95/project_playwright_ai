@@ -116,6 +116,35 @@ class JsonWriter {
     console.log('PO Number saved:', poNumber);
   }
 
+  static saveBIDNumber(bidNumber){
+    const filePath=path.join(
+        __dirname,
+        '..',
+        'testdata.json'
+    );
+
+    let data={};
+
+    if(fs.existsSync(filePath)){
+        data=JSON.parse(
+            fs.readFileSync(filePath,'utf8')
+        );
+    }
+
+    data.supplierBid=data.supplierBid||{};
+
+    data.supplierBid.bidNumber=bidNumber;
+
+    fs.writeFileSync(
+        filePath,
+        JSON.stringify(data,null,4)
+    );
+
+    console.log('BID Number saved:',bidNumber);
+
+    return bidNumber;
+  }
+
   static saveApprovalData(prNumber, approvalData) {
     this.ensureTestResultsDir();
 
