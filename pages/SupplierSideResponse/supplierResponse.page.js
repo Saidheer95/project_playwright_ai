@@ -10,12 +10,17 @@ class SupplierResponse{
         this.finalAcknowledge='[data-testid="button-submit-ack"]';
         this.bidResponseNo='[data-testid="input-search-suppbids"]';
     }
-    async submitResponse(){
+    async submitResponse(testData){
         await this.page.click(this.clickBids);
         const bidSearch = this.page.locator(this.searchBids);
-        await bidSearch.fill(testData.bidNumber);      
+        await bidSearch.fill(testData.bidNumber);  
+        await this.page.click(this.enterAcknowldege);
+        await this.page.click(this.selectType);
+        await this.page.fill(this.enterBuyerNotes,testData.supplierBid.buyerNotes);
+        await this.page.click(this.selectTermsAndConditions);
+        await this.page.click(this.finalAcknowledge);    
           
 
 
     }
-}
+}module.exports=SupplierResponse;
