@@ -431,26 +431,25 @@ class LoginPage{
     console.log('Login page is ready');
   }
 
-  async logout(){
+ 
+    async logout(){
     console.log('Logging out current user');
 
+    // 1. Verify and click the user profile menu
     await expect(this.clickUser).toBeVisible();
     await expect(this.clickUser).toBeEnabled();
-
     await this.clickUser.click();
 
+    // 2. Verify and click the sign-out button
     await expect(this.signOut).toBeVisible();
     await expect(this.signOut).toBeEnabled();
-
     await this.signOut.click();
 
+    // 3. Wait until the login page fields are visible again
     await this.waitForLoginPage();
 
     console.log('Logout completed successfully');
   }
 }
 
-module.exports={
-  LoginPage,
-  loadCredentials
-};
+module.exports={ LoginPage, loadCredentials};

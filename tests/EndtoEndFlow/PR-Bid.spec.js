@@ -443,7 +443,7 @@ test.describe('End to End Flow',()=>{
             );
 
             // =================================================
-            // SUPPLIER RESPONSE
+            // SUPPLIER Acknoweledge
             // =================================================
 
             console.log('');
@@ -568,6 +568,5 @@ test.describe('End to End Flow',()=>{
             `Supplier Response Type    : ${testData.supplierBid.typeAction}`
         );
 
-        console.log('========================================');
     });
 });

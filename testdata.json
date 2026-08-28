@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00725"
+        "prNumber": "PR_00740"
     },
     "approvers": {
-        "number": "PR_00725",
+        "number": "PR_00740",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -55,6 +55,7 @@
                 "Finance"
             ]
         },
+        "criteriaDescription":"Test",
         "criteriaOption": "Optional",
         "criteriaValueType": "Text",
         "criteriaWeight": "50",
@@ -64,7 +65,8 @@
         "commercialTeam": {
             "name": "Sai"
         },
-        "termsType": "Terms"
+        "termsType": "Terms",
+        "termsDescription":"Here the terms description data"
     },
     "createBidTender": {
         "type": "Bid",
@@ -112,7 +114,7 @@
         "termsDescription": "Payment Terms"
     },
     "supplierBid": {
-        "bidNumber": "RFQ260199",
+        "bidNumber": "RFQ260202",
         "typeAction": "Participating",
         "buyerNotes": "Acknowledge by the supplier"
     },
@@ -129,7 +131,16 @@
     },
     "directBid": {
         "bidDescription": "Enter the bid description",
-        "bidType": "RFQ",
+        "bidType": "RFP",
+        "businessEntity": "Entity1",
+        "buyer": "Harshit",
+        "currency": "INR",
+        "paymentTerms": "30 Days",
+        "deliveryLocation": "Chennai"
+    },
+    "directBidRFP": {
+        "bidDescription": "Enter the bid description",
+        "bidType": "RFP",
         "businessEntity": "Entity1",
         "buyer": "Harshit",
         "currency": "INR",

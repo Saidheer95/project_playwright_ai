@@ -48,7 +48,7 @@ class DirectBid {
         const dynamicData = generateBidTestData('RFQ');
 
 
-        await this.page.pause();
+        // await this.page.pause();
 
         await this.page.click(this.clickBid);
 

@@ -1,21 +1,30 @@
 const { test } = require('@playwright/test');
-const Create_Direct_Bid = require('../../pages/Bids/DirectBid.page');
-const Add_Line = require('../../pages/Bids/AddBidRFQ.page');
+const Create_Direct_Bid_RFP = require('../../pages/Bids/DirectBid.page');
+const Add_RFP_Line = require('../../pages/Bids/AddBidRFP.page');
 const { LoginPage, loadCredentials } = require('../../pages/Login/login.page');
 const testdata = require('../../testdata.json');
 test.describe('Create Bid Flow', () => {
     test.beforeEach(async ({ page }) => {
         const loginPage = new LoginPage(page);
         const credentials = loadCredentials();
+        console.time('login');
         await page.goto(credentials.loginUrl);
         await loginPage.login(credentials.buyer.email, credentials.buyer.password);
+        console.timeEnd('login');
+
     });
 
     test('Direct Bid Creation', async ({ page }) => {
-        const create_direct_bid_page = new Create_Direct_Bid(page);
-        await create_direct_bid_page.bidDirectPage(testdata);
-        const add_bid_line_page = new Add_Line(page);     
-        await add_bid_line_page.addBidLine(testdata);
+        const create_direct_RFP_page = new Create_Direct_Bid_RFP(page);
+
+        console.time('bidDirectPage');
+        await create_direct_RFP_page.bidDirectPage(testdata);
+        console.timeEnd('bidDirectPage');
+
+        const add_bid_line_page = new Add_RFP_Line(page);  
+        console.time('addBidRFPLine');
+        await add_bid_line_page.addBidRFPLine(testdata);
+        console.timeEnd('addBidRFPLine');
         console.log("Bid Line added successfully");
         // console.log(`Quantity: ${testdata.addLine.quantity}`);
         // console.log(`Price: ${testdata.addLine.price}`);
@@ -24,6 +33,11 @@ test.describe('Create Bid Flow', () => {
 
     test.afterEach(async({page})=>{
         const loginPage = new LoginPage(page);
+        console.time('logout');
+
         loginPage.logout();
+
+        console.timeEnd('logout');
+
     });
 })
