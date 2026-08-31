@@ -31,13 +31,13 @@ test.describe('Create Bid Flow', () => {
 
     });
 
-    test.afterEach(async({page})=>{
-        const loginPage = new LoginPage(page);
-        console.time('logout');
+    // test.afterEach(async({page})=>{
+    //     const loginPage = new LoginPage(page);
+    //     console.time('logout');
 
-        loginPage.logout();
+    //     loginPage.logout();
 
-        console.timeEnd('logout');
+    //     console.timeEnd('logout');
 
-    });
+    // });
 })
