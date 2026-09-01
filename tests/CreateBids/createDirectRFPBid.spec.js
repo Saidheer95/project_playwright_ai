@@ -26,9 +26,7 @@ test.describe('Create Bid Flow', () => {
         await add_bid_line_page.addBidRFPLine(testdata);
         console.timeEnd('addBidRFPLine');
         console.log("Bid Line added successfully");
-        // console.log(`Quantity: ${testdata.addLine.quantity}`);
-        // console.log(`Price: ${testdata.addLine.price}`);
-
+       
     });
 
     // test.afterEach(async({page})=>{

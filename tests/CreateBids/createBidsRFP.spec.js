@@ -3,6 +3,7 @@ const Create_Bid_RFP=require('../../pages/PR_BID/bidsRFP.page');
 const {LoginPage,loadCredentials}=require('../../pages/Login/login.page');
 const testData=require('../../testdata.json');
 test.describe('Create Bid Flow',()=>{
+
     test.beforeEach(async({page})=>{
         const loginPage=new LoginPage(page); 
         const credentials = loadCredentials();

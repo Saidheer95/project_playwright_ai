@@ -131,7 +131,7 @@
     },
     "directBid": {
         "bidDescription": "Enter the bid description",
-        "bidType": "RFP",
+        "bidType": "Tender",
         "businessEntity": "Entity1",
         "buyer": "Harshit",
         "currency": "INR",
@@ -140,7 +140,7 @@
     },
     "directBidRFP": {
         "bidDescription": "Enter the bid description",
-        "bidType": "RFP",
+        "bidType": "Tender",
         "businessEntity": "Entity1",
         "buyer": "Harshit",
         "currency": "INR",

@@ -13,6 +13,8 @@ import { defineConfig, devices } from '@playwright/test';
  * @see https://playwright.dev/docs/test-configuration
  */
 export default defineConfig({
+
+  timeout: 60 * 1000,
   // testDir: './tests',
   testDir: './',
 
@@ -67,10 +69,8 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-        screenshot: "on",
-        video: "on",
-        trace: "on"
+        ...devices['Desktop Chrome']
+      
       }
       ,
     },

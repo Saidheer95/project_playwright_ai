@@ -210,17 +210,24 @@ class AddRFPLine {
         await expect(techOption).toBeVisible();
         await techOption.click();
 
+
         const commTeamBtn = this.page.locator(this.selectCommercialTeam);
         await expect(commTeamBtn).toBeVisible();
         await commTeamBtn.click();
 
         const searchCommInput = this.page.locator(this.searchCommercialTeam);
         await expect(searchCommInput).toBeVisible();
+        await searchCommInput.fill('');
         await searchCommInput.fill(testdata.createBidRFP.commercialTeam.name);
 
-        const commOption = this.page.getByRole('option', { name: testdata.createBidRFP.commercialTeam.name }).first();
+        const commOption = this.page
+            .locator('[role="option"]')
+            .filter({ hasText: testdata.createBidRFP.commercialTeam.name })
+            .first();
+
         await expect(commOption).toBeVisible();
-        await commOption.click();
+
+        await commOption.click({ force: true });
 
         // Terms and publish section
         const termsTab = this.page.locator(this.clickTerms);

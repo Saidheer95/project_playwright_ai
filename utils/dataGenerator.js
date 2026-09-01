@@ -139,7 +139,7 @@ function generateReferenceNumber(prefix = 'RFQ') {
  * RFP
  * TENDER
  */
-function generateBidTestData(type = 'RFQ') {
+function generateBidTestData(type = 'Tender') {
 
     const normalizedType = type.toUpperCase();
 

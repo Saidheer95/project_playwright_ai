@@ -172,7 +172,7 @@ class JsonWriter {
       JSON.stringify(allResults, null, 4)
     );
 
-    console.log(`✓ Approval Data saved - PR: ${prNumber}`);
+    console.log(`Approval Data saved - PR: ${prNumber}`);
   }
 }
 
