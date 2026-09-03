@@ -145,6 +145,38 @@ class JsonWriter {
     return bidNumber;
   }
 
+
+
+  static saveContractNumber(contractNumber){
+    const filePath=path.join(
+        __dirname,
+        '..',
+        'testdata.json'
+    );
+
+    let data={};
+
+    if(fs.existsSync(filePath)){
+        data=JSON.parse(
+            fs.readFileSync(filePath,'utf8')
+        );
+    }
+
+    // data.supplierBid=data.supplierBid||{};
+
+    data.contractNumber=contractNumber;
+
+    fs.writeFileSync(
+        filePath,
+        JSON.stringify(data,null,4)
+    );
+
+    console.log('Contract Number saved:',contractNumber);
+
+    return contractNumber;
+  }
+
+
   static saveApprovalData(prNumber, approvalData) {
     this.ensureTestResultsDir();
 

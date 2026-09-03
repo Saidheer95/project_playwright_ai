@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00740"
+        "prNumber": "PR_00801"
     },
     "approvers": {
-        "number": "PR_00740",
+        "number": "PR_00801",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -55,7 +55,7 @@
                 "Finance"
             ]
         },
-        "criteriaDescription":"Test",
+        "criteriaDescription": "Test",
         "criteriaOption": "Optional",
         "criteriaValueType": "Text",
         "criteriaWeight": "50",
@@ -66,7 +66,7 @@
             "name": "Sai"
         },
         "termsType": "Terms",
-        "termsDescription":"Here the terms description data"
+        "termsDescription": "Here the terms description data"
     },
     "createBidTender": {
         "type": "Bid",
@@ -114,9 +114,28 @@
         "termsDescription": "Payment Terms"
     },
     "supplierBid": {
-        "bidNumber": "RFQ260202",
+        "bidNumber": "RFQ260215",
         "typeAction": "Participating",
         "buyerNotes": "Acknowledge by the supplier"
+    },
+    "createContract": {
+        "type": "Contract",
+        "supplier": {
+            "name": "Sai Corporation"
+        }
+    },
+    "reviewer": {
+        "name": [
+            "Ashok"
+        ]
+    },
+    "clauses": {
+        "title": "Standard Quality Assurance Clause",
+        "description": "The supplier shall provide the documents related to quality assurance and certifications"
+    },
+    "contractNumber": "640965651",
+    "updateClauses": {
+        "editdescription": "Edit the clause description"
     },
     "createPurchaseOrder": {
         "type": "PO",

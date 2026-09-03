@@ -1,6 +1,7 @@
 const { faker } = require('@faker-js/faker');
 
 
+
 /**
  * Format date as:
  * YYYY-MM-DDTHH:mm
@@ -15,6 +16,18 @@ function formatDateTimeLocal(date) {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
+
+/**
+ * Format date as:
+ * YYYY-MM-DD
+ */
+function formatDateOnly(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
 
 /**
  * Generate RFQ / RFP dates
@@ -65,6 +78,26 @@ function generateTenderDates() {
         openDate: formatDateTimeLocal(openDate),
         closeDate: formatDateTimeLocal(closeDate),
         envelopeOpenDate: formatDateTimeLocal(envelopeOpenDate)
+    };
+}
+
+/**
+ * Generate Contract dates (Date-only, NO time)
+ *
+ * Open  = current date
+ * Close = open + 3 days
+ */
+function generateContractDates() {
+
+    const now = new Date();
+
+    const openDate = new Date(now);
+    const closeDate = new Date(openDate);
+    closeDate.setDate(closeDate.getDate() + 3);
+
+    return {
+        openDate: formatDateOnly(openDate),
+        closeDate: formatDateOnly(closeDate)
     };
 }
 
@@ -138,14 +171,15 @@ function generateReferenceNumber(prefix = 'RFQ') {
  * RFQ
  * RFP
  * TENDER
+ * CONTRACT
  */
 function generateBidTestData(type = 'Tender') {
 
     const normalizedType = type.toUpperCase();
 
-    if (!['RFQ', 'RFP', 'TENDER'].includes(normalizedType)) {
+    if (!['RFQ', 'RFP', 'TENDER', 'CONTRACT'].includes(normalizedType)) {
         throw new Error(
-            `Unsupported bid type: ${type}. Supported types: RFQ, RFP, TENDER`
+            `Unsupported bid type: ${type}. Supported types: RFQ, RFP, TENDER, CONTRACT`
         );
     }
 
@@ -170,7 +204,8 @@ function generateBidTestData(type = 'Tender') {
     // RFQ and RFP use the same bid dates
     if (
         normalizedType === 'RFQ' ||
-        normalizedType === 'RFP'
+        normalizedType === 'RFP' 
+       
     ) {
 
         return {
@@ -178,6 +213,15 @@ function generateBidTestData(type = 'Tender') {
             ...generateBidDates()
         };
     }
+    // Contract uses date-only (YYYY-MM-DD)
+    if (normalizedType === 'CONTRACT') {
+
+        return {
+            ...commonData,
+            ...generateContractDates()
+        };
+    }
+
 
 
     // Tender has additional envelope open date
@@ -194,6 +238,7 @@ function generateBidTestData(type = 'Tender') {
 module.exports = {
     generateBidTestData,
     generateBidDates,
+    generateContractDates,
     generateTenderDates,
     generateDescription,
     generateCriteriaDescription,
