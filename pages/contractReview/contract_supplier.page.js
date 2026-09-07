@@ -1,25 +1,20 @@
-class ReviewerPage {
+class SupplierAcceptPage {
     constructor(page){
         this.page=page;
-        this.contractNavigationLink='[data-testid="nav-contracts-group"]';
         this.contractNavigationTab='[data-testid="nav-contracts"]';
-        this.draftTab='[data-testid="tab-draft-contracts"]';
-        this.searchContract='[data-testid="input-search-drafts"]';
+        this.searchContract='[data-testid="input-search-open"]';
         this.contractPreviewTab='[data-testid="button-view-toggle"]';
         this.clausesTab='[data-testid="tab-clauses"]';
         this.saveChanges='[data-testid="button-save-clauses"]';
-        this.reviewActions='[data-testid="button-review-actions"]';
-        this.confirm='[data-testid="button-confirm-accept-review"]';
+        this.confirm='[data-testid="button-submit-acceptance""]';
     }
 
-async submitReview(testdata){
+async submitSupplier(testdata){
     await this.page.pause();
-    await this.page.click(this.contractNavigationLink);
     await this.page.click(this.contractNavigationTab);
-    await this.page.click(this.draftTab);
     await this.page.fill(this.searchContract, testdata.contractNumber);
     
-    const contractNumber=this.page.getByText(testdata.contractNumber,{exact:true});
+    const contractNumber=this.page.getByText(testdata.contractNumber);
     await contractNumber.waitFor({state:'visible'});
     await contractNumber.click();
 
@@ -43,16 +38,9 @@ async submitReview(testdata){
             .last();
 
     await descriptionField.waitFor({ state: 'visible' });
-    await descriptionField.click();
-
-    // Move cursor to the end of the existing content
-    await this.page.keyboard.press('Control+End');
-
 
     await descriptionField.fill(testdata.updateClauses.editdescription);
     await this.page.click(this.saveChanges);
-    await this.page.click(this.reviewActions);
-    await this.page.getByTestId('menuitem-accept-review').click();
     await this.page.click(this.confirm);
 
 
@@ -60,4 +48,4 @@ async submitReview(testdata){
 
 }
 
-}module.exports=ReviewerPage;
+}module.exports=SupplierAcceptPage;
