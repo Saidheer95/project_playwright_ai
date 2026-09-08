@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00826"
+        "prNumber": "PR_00833"
     },
     "approvers": {
-        "number": "PR_00826",
+        "number": "PR_00833",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -133,7 +133,7 @@
         "title": "Standard Quality Assurance Clause",
         "description": "The supplier shall provide the documents related to quality assurance and certifications"
     },
-    "contractNumber": "780333190",
+    "contractNumber": "233639871",
     "updateClauses": {
         "editdescription": "Edit the clause description"
     },

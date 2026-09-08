@@ -1,63 +1,72 @@
+const { expect } = require('@playwright/test');
+
+
 class ReviewerPage {
-    constructor(page){
-        this.page=page;
-        this.contractNavigationLink='[data-testid="nav-contracts-group"]';
-        this.contractNavigationTab='[data-testid="nav-contracts"]';
-        this.draftTab='[data-testid="tab-draft-contracts"]';
-        this.searchContract='[data-testid="input-search-drafts"]';
-        this.contractPreviewTab='[data-testid="button-view-toggle"]';
-        this.clausesTab='[data-testid="tab-clauses"]';
-        this.saveChanges='[data-testid="button-save-clauses"]';
-        this.reviewActions='[data-testid="button-review-actions"]';
-        this.confirm='[data-testid="button-confirm-accept-review"]';
+    constructor(page) {
+        this.page = page;
+        this.contractNavigationLink = '[data-testid="nav-contracts-group"]';
+        this.contractNavigationTab = '[data-testid="nav-contracts"]';
+        this.draftTab = '[data-testid="tab-draft-contracts"]';
+        this.searchContract = '[data-testid="input-search-drafts"]';
+        this.contractPreviewTab = '[data-testid="button-view-toggle"]';
+        this.clausesTab = '[data-testid="tab-clauses"]';
+        this.saveChanges = '[data-testid="button-save-clauses"]';
+        this.reviewActions = '[data-testid="button-review-actions"]';
+        this.confirm = '[data-testid="button-confirm-accept-review"]';
     }
 
-async submitReview(testdata){
-    await this.page.pause();
-    await this.page.click(this.contractNavigationLink);
-    await this.page.click(this.contractNavigationTab);
-    await this.page.click(this.draftTab);
-    await this.page.fill(this.searchContract, testdata.contractNumber);
-    
-    const contractNumber=this.page.getByText(testdata.contractNumber,{exact:true});
-    await contractNumber.waitFor({state:'visible'});
-    await contractNumber.click();
+    async submitReview(testdata) {
+        await this.page.click(this.contractNavigationLink);
+        await this.page.click(this.contractNavigationTab);
+        await this.page.click(this.draftTab);
+        await this.page.fill(this.searchContract, testdata.contractNumber);
 
-    
+        const contractNumber = this.page.getByText(
+            testdata.contractNumber,
+            { exact: true }
+        );
 
-    await this.page.click(this.contractPreviewTab);
+        await contractNumber.waitFor({ state: 'visible' });
+        await contractNumber.click();
 
-   const tabClauses = this.page.locator(this.clausesTab);
+        await this.page.click(this.contractPreviewTab);
 
-        // Wait for the tab to exist
+        const tabClauses = this.page.locator(this.clausesTab);
+
         await tabClauses.waitFor({ state: 'visible' });
-
-        // Scroll the Clauses tab into the viewport
         await tabClauses.scrollIntoViewIfNeeded();
-
-        // Click Clauses tab
         await tabClauses.click();
 
-    const descriptionField = this.page
+        const descriptionField = this.page
             .locator('[contenteditable="true"][data-placeholder="Click here to start editing..."]')
             .last();
 
-    await descriptionField.waitFor({ state: 'visible' });
-    await descriptionField.click();
+        await descriptionField.waitFor({ state: 'visible' });
+        await descriptionField.click();
 
-    // Move cursor to the end of the existing content
-    await this.page.keyboard.press('Control+End');
+        await this.page.keyboard.press('Control+End');
+
+        await descriptionField.fill(
+            testdata.updateClauses.editdescription
+        );
+
+        // Wait for Save Changes to appear/become enabled
+        const saveChangesButton = this.page.locator(this.saveChanges);
+
+        await saveChangesButton.waitFor({ state: 'visible' });
+        await expect(saveChangesButton).toBeEnabled();
+
+        await saveChangesButton.click();
+
+        // Wait for save operation to complete before continuing
+        await this.page.waitForLoadState('networkidle');
+
+        await this.page.click(this.reviewActions);
+
+        await this.page.getByTestId('menuitem-accept-review').click();
+
+        await this.page.click(this.confirm);
+    }
 
 
-    await descriptionField.fill(testdata.updateClauses.editdescription);
-    await this.page.click(this.saveChanges);
-    await this.page.click(this.reviewActions);
-    await this.page.getByTestId('menuitem-accept-review').click();
-    await this.page.click(this.confirm);
-
-
-
-
-}
-
-}module.exports=ReviewerPage;
+} module.exports = ReviewerPage;
