@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00833"
+        "prNumber": "PR_00848"
     },
     "approvers": {
-        "number": "PR_00833",
+        "number": "PR_00848",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -114,7 +114,7 @@
         "termsDescription": "Payment Terms"
     },
     "supplierBid": {
-        "bidNumber": "RFQ260218",
+        "bidNumber": "RFQ260223",
         "typeAction": "Participating",
         "buyerNotes": "Acknowledge by the supplier"
     },
@@ -133,7 +133,7 @@
         "title": "Standard Quality Assurance Clause",
         "description": "The supplier shall provide the documents related to quality assurance and certifications"
     },
-    "contractNumber": "233639871",
+    "contractNumber": "210311506",
     "updateClauses": {
         "editdescription": "Edit the clause description"
     },

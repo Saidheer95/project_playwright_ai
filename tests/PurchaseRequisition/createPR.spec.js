@@ -7,7 +7,7 @@ const testData = require('../../testdata.json');
 
 test.describe('Purchase Requisition Page', () => {
 
-    test('should create a new purchase requisition', async ({ page }) => {
+    test('Create PROne', async ({ page }) => {
         const loginPage = new LoginPage(page);
         const credentials = loadCredentials();
 
