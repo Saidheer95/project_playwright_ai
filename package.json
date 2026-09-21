@@ -20,6 +20,7 @@
     "allure-playwright": "^3.10.2"
   },
   "dependencies": {
+    "@faker-js/faker": "^10.6.0",
     "@google/genai": "^2.23.0",
     "dotenv": "^17.4.2"
   }
