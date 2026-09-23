@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00867"
+        "prNumber": "PR_00889"
     },
     "approvers": {
-        "number": "PR_00867",
+        "number": "PR_00889",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -71,9 +71,6 @@
     "createBidTender": {
         "type": "Bid",
         "bidname": "Tender",
-        "openDate": "2026-08-21T12:00",
-        "closeDate": "2026-08-22T14:27",
-        "envelopeOpenDate": "2026-08-23T14:30",
         "supplier": {
             "name": [
                 "Demo",

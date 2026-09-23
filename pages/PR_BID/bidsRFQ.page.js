@@ -1,4 +1,4 @@
-const {generateBidTestData} = require('../../utils/dataGenerator');
+const {generateRFQTestData} = require('../../utils/dataGenerator');
 const JsonWriter = require('../../utils/JsonWriter');
 
 class Bids{
@@ -25,9 +25,10 @@ class Bids{
     }
 
     async createBid(testData){
-        const dynamicData=generateBidTestData('RFQ');
+         const dynamicData = generateRFQTestData('RFQ');
 
-        console.log('Generated RFP data:',dynamicData);
+        console.log('Generated Tender data:', dynamicData);
+
 
         await this.page.click(this.requisitionLink);
 

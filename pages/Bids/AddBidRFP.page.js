@@ -192,7 +192,6 @@ class AddRFPLine {
 
             await expect(submitCriteriaBtn).toBeHidden();
         }
-
         // Evaluation team section
         const evalTeamTab = this.page.locator(this.selectEvaluationTeam);
         await expect(evalTeamTab).toBeVisible();
@@ -263,6 +262,7 @@ class AddRFPLine {
         await expect(finalBidBtn).toBeEnabled();
         await finalBidBtn.click();
     }
+
 }
 
 module.exports = AddRFPLine;
