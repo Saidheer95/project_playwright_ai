@@ -1,69 +1,162 @@
 class AddPrLinePage {
     constructor(page) {
         this.page = page;
+
         this.addLineButton = '[data-testid="button-add-line-item"]';
-        this.selectProduct = '[data-testid="button-select-item"]';
-        this.enterQuantity = '[data-testid="input-line-quantity"]';
+        this.productSelectButton = '[data-testid="button-select-item"]';
+        this.quantityInput = '[data-testid="input-line-quantity"]';
         this.uomSelect = '[data-testid="select-line-uom"]';
         this.priceInput = '[data-testid="input-line-unit-price"]';
         this.saveLineButton = '[data-testid="button-save-line"]';
+        this.addLineDialog = '[role="dialog"]:visible';
+        this.successToast = 'text=Line item added successfully';
+    }
+
+    async openAddLine() {
+        await this.page
+            .locator(this.addLineButton)
+            .waitFor({ state: 'visible' });
+
+        await this.page
+            .locator(this.addLineButton)
+            .click();
+
+        await this.page
+            .locator(this.saveLineButton)
+            .waitFor({ state: 'visible' });
     }
 
     async selectRandomProduct() {
-        await this.page.click(this.selectProduct);
+        await this.page
+            .locator(this.productSelectButton)
+            .waitFor({ state: 'visible' });
 
-        const options = this.page.locator('[role="option"]');
+        await this.page
+            .locator(this.productSelectButton)
+            .click();
 
-        await options.first().waitFor();
+        const options =
+            this.page.locator('[role="option"]:visible');
 
-        const count = await options.count();
-
-        const randomIndex = Math.floor(Math.random() * count);
-
-        await options.nth(randomIndex).click();
-    }
-
-    async selectDropdown() {
-        await this.page.click(this.uomSelect);
-
-        const options = this.page.locator('[role="option"]');
-
-        await options.first().waitFor();
+        await options.first().waitFor({
+            state: 'visible'
+        });
 
         const count = await options.count();
 
-        const randomIndex = Math.floor(Math.random() * count);
+        if (!count) {
+            throw new Error('No product options available.');
+        }
 
-        await options.nth(randomIndex).click();
+        const randomIndex =
+            Math.floor(Math.random() * count);
+
+        await options
+            .nth(randomIndex)
+            .click();
     }
 
+    async enterQuantity(quantity) {
+        const input =
+            this.page.locator(this.quantityInput);
+
+        await input.waitFor({
+            state: 'visible'
+        });
+
+        await input.fill(String(quantity));
+    }
+
+    async selectRandomUOM() {
+        const uom =
+            this.page.locator(this.uomSelect);
+
+        await uom.waitFor({
+            state: 'visible'
+        });
+
+        await uom.click();
+
+        const options =
+            this.page.locator('[role="option"]:visible');
+
+        await options.first().waitFor({
+            state: 'visible'
+        });
+
+        const count = await options.count();
+
+        if (!count) {
+            throw new Error('No UOM options available.');
+        }
+
+        const randomIndex =
+            Math.floor(Math.random() * count);
+
+        await options
+            .nth(randomIndex)
+            .click();
+    }
+
+    async enterPrice(price) {
+        const input =
+            this.page.locator(this.priceInput);
+
+        await input.waitFor({
+            state: 'visible'
+        });
+
+        await input.fill(String(price));
+    }
+
+    async saveLine() {
+        await this.page
+            .locator(this.saveLineButton)
+            .click();
+
+        await this.page
+            .locator(this.successToast)
+            .waitFor({
+                state: 'visible',
+                timeout: 5000
+            })
+            .catch(() => {});
+    }
+
+    async closeAddLine() {
+        const dialog =
+            this.page.locator(this.addLineDialog);
+
+        if (await dialog.count()) {
+            await this.page.keyboard.press('Escape');
+
+            await dialog
+                .first()
+                .waitFor({
+                    state: 'hidden',
+                    timeout: 3000
+                })
+                .catch(() => {});
+        }
+    }
 
     async addPurchaseRequisitionLine(testData) {
+        await this.openAddLine();
 
-        // Open Add Line modal
-        await this.page.click(this.addLineButton);
-
-        // Wait for modal to be visible
-        await this.page.locator(this.saveLineButton).waitFor({ state: 'visible' });
-
-        // Fill form
         await this.selectRandomProduct();
-        await this.page.fill(this.enterQuantity, String(testData.addLine.quantity));
-        await this.selectDropdown();
-        await this.page.fill(this.priceInput, String(testData.addLine.price));
 
-     
-        await this.page.click(this.saveLineButton)
+        await this.enterQuantity(
+            testData.addLine.quantity
+        );
 
+        await this.selectRandomUOM();
 
-        // Wait for success toast
-        const toast = this.page.locator('text=Line item added successfully');
+        await this.enterPrice(
+            testData.addLine.price
+        );
 
-        // Small stabilization wait
-        await this.page.waitForTimeout(500);
+        await this.saveLine();
     }
-
 }
 
 module.exports = AddPrLinePage;
-
