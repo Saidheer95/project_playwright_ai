@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00889"
+        "prNumber": "PR_00920"
     },
     "approvers": {
-        "number": "PR_00889",
+        "number": "PR_00920",
         "action": "Approve",
         "comments": "Approved"
     },

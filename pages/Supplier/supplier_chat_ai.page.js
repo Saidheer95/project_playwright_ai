@@ -1,13 +1,17 @@
-class PRChatPage {
+class SupplierChatPage {
+
     constructor(page) {
+
         this.page = page;
-        this.agentConsoleDropdown = '[data-testid="nav-ai"]';
+
+        this.agentConsoleDropdown =
+            '[data-testid="nav-ai"]';
 
         this.clickAIAgent =
             '[data-testid="nav-ai-agents"]';
 
-        this.clickSourcingAgent =
-            '[data-testid="card-agent-procurement"]';
+        this.clickSupplierAgent =
+            '[data-testid="card-agent-vendor"]';
 
         this.chatMessages =
             page.locator(
@@ -15,18 +19,23 @@ class PRChatPage {
             );
 
         this.chatInput =
-            '[data-testid="input-procurement-prompt"]';
+            '[data-testid="input-vendor-prompt"]';
 
         this.sendButton =
-            '[data-testid="button-procurement-submit"]';
+            '[data-testid="button-vendor-submit"]';
 
         this.messageRows =
             this.chatMessages.locator(
                 ':scope > div'
             );
+
+        this.agentMessages =
+            this.chatMessages.locator(
+                'div.bg-muted'
+            );
     }
 
-    async openProcurementAgent() {
+    async openSupplierAgent() {
 
         await this.page
             .locator(
@@ -42,7 +51,7 @@ class PRChatPage {
 
         await this.page
             .locator(
-                this.clickSourcingAgent
+                this.clickSupplierAgent
             )
             .click();
 
@@ -73,13 +82,38 @@ class PRChatPage {
         return await this.messageRows.count();
     }
 
+    async getAgentMessageCount() {
+
+        return await this.agentMessages.count();
+    }
+
+    async getLatestAgentResponse() {
+
+        const count =
+            await this.getAgentMessageCount();
+
+        const latestMessage =
+            this.agentMessages.nth(
+                count - 1
+            );
+
+        await latestMessage.waitFor({
+            state: 'visible'
+        });
+
+        const responseText =
+            await latestMessage.innerText();
+
+        return responseText.trim();
+    }
+
     async waitForNewResponse(
-        previousCount,
-        userMessage
+        previousAgentCount
     ) {
 
         await this.page.waitForFunction(
-            ({ previousCount, userMessage }) => {
+
+            (previousCount) => {
 
                 const container =
                     document.querySelector(
@@ -90,67 +124,28 @@ class PRChatPage {
                     return false;
                 }
 
-                const rows =
-                    Array.from(
-                        container.children
+                const messages =
+                    container.querySelectorAll(
+                        'div.bg-muted'
                     );
 
-                if (
-                    rows.length <=
+                return (
+                    messages.length >
                     previousCount
-                ) {
-                    return false;
-                }
-
-                const latestRow =
-                    rows[rows.length - 1];
-
-                const latestText =
-                    latestRow.innerText?.trim() ||
-                    '';
-
-                if (!latestText) {
-                    return false;
-                }
-
-                if (
-                    latestText ===
-                    userMessage.trim()
-                ) {
-                    return false;
-                }
-
-                return true;
-
+                );
             },
-            {
-                previousCount,
-                userMessage
-            },
+
+            previousAgentCount,
+
             {
                 timeout: 60000
             }
         );
 
-        const count =
-            await this.getMessageCount();
-
-        const latestRow =
-            this.messageRows.nth(
-                count - 1
-            );
-
-        await latestRow.waitFor({
-            state: 'visible'
-        });
-
-        const responseText =
-            await latestRow.innerText();
-
-        return responseText.trim();
+        return await this.getLatestAgentResponse();
     }
 }
 
 module.exports = {
-    PRChatPage
+    SupplierChatPage
 };

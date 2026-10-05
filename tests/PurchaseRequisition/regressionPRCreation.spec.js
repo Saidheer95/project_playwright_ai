@@ -17,13 +17,7 @@ test.describe('Purchase Requisition - Header Level Regression', () => {
             credentials.requestor.email,
             credentials.requestor.password
         );
-    });
-
-    // test.afterEach(async ({ page }) => {
-    //     const loginPage = new LoginPage(page);
-
-    //     await loginPage.logout();
-    // });
+    });  
 
     test('PR-HDR-001 - Navigate to Create PR page', async ({ page }) => {
         const purchaseRequisitionPage =
