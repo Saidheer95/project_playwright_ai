@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00920"
+        "prNumber": "PR_00962"
     },
     "approvers": {
-        "number": "PR_00920",
+        "number": "PO_00486",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -141,9 +141,9 @@
         "advancePayment": "10"
     },
     "purchaseOrder": {
-        "poNumber": "PO_00382",
-        "action": "Reject",
-        "comments": "Rejected"
+        "poNumber": "PO_00486",
+        "action": "Approve",
+        "comments": "Approved"
     },
     "directBid": {
         "bidDescription": "Enter the bid description",
@@ -164,5 +164,12 @@
         "enterClosedDate": "2026-07-26T17:27",
         "paymentTerms": "30 Days",
         "deliveryLocation": "Chennai"
+    },
+    "deliveryNote": {
+        "asn": "ASN-1889",
+        "quantity": "1",
+        "shipDate": "2026-10-07",
+        "arrivalDate": "2026-10-09",
+        "response": "Accept"
     }
 }

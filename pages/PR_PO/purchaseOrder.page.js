@@ -22,7 +22,6 @@ class PurchaseOrderPage {
   async createPurchaseOrder(testData) {
     console.log(`Creating Purchase Order for PR Number: ${testData.addLine.prNumber}`);
 
-    await this.page.pause();
     await this.page.locator(this.requisitionLink).click();
 
     const prSearch = this.page.locator(this.searchPR);
