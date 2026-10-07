@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00962"
+        "prNumber": "PR_00974"
     },
     "approvers": {
-        "number": "PO_00486",
+        "number": "PR_00974",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -141,7 +141,7 @@
         "advancePayment": "10"
     },
     "purchaseOrder": {
-        "poNumber": "PO_00486",
+        "poNumber": "PO_00494",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -168,6 +168,7 @@
     "deliveryNote": {
         "asn": "ASN-1889",
         "quantity": "1",
+        "carrier": "DTDC",
         "shipDate": "2026-10-07",
         "arrivalDate": "2026-10-09",
         "response": "Accept"
