@@ -69,8 +69,8 @@ export default defineConfig({
     {
       name: 'chromium',
       use: {
-        ...devices['Desktop Chrome'],
-        video: 'on'
+        ...devices['Desktop Chrome']
+//        video: 'on'
       
       }
       ,

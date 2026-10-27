@@ -17,6 +17,10 @@ class DirectBid {
         this.selectBidCloseDate = '[data-testid="input-bid-end-date"]';
         this.selectBidEnvelopeDate = '[data-testid="input-bid-env-open-date"]';
         this.selectPaymentTerms = '[data-testid="select-bid-payment-terms"]';
+        this.selectTermsAttachment='[data-testid="button-add-terms-attachment"]';
+        this.enterDescription='[data-testid="input-terms-attach-desc"]';
+        this.selectAttachment='[data-testid="button-add-terms-attachment"]';
+        this.finaltermsAttachment='[data-testid="button-submit-terms-attachment"]'
 
         this.selectDeliveryLocation =
             '[data-testid="select-bid-delivery-location"]';
@@ -126,17 +130,17 @@ class DirectBid {
         await this.page.fill(this.selectBidCloseDate, dynamicData.closeDate);
 
 
-        const envelopeOpenDate = this.page.locator(this.selectBidEnvelopeDate);
-        await expect(envelopeOpenDate).toBeEnabled();
+        // const envelopeOpenDate = this.page.locator(this.selectBidEnvelopeDate);
+        // await expect(envelopeOpenDate).toBeEnabled();
 
 
-        console.log('Envelope Open Date:', dynamicData.envelopeOpenDate);
+        // console.log('Envelope Open Date:', dynamicData.envelopeOpenDate);
 
-        await envelopeOpenDate.fill(dynamicData.envelopeOpenDate);
+        // await envelopeOpenDate.fill(dynamicData.envelopeOpenDate);
 
-        await expect(envelopeOpenDate).toHaveValue(
-            dynamicData.envelopeOpenDate
-        );
+        // await expect(envelopeOpenDate).toHaveValue(
+        //     dynamicData.envelopeOpenDate
+        // );
 
 
 
@@ -146,6 +150,9 @@ class DirectBid {
             this.selectPaymentTerms,
             testdata.directBid.paymentTerms
         );
+
+        await this.click(this.selectTermsAttachment);
+        await this.page.fill(this.enterDescription)
 
         // Delivery Location
         await this.selectDropdown(

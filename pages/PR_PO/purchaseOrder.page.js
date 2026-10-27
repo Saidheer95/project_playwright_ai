@@ -40,7 +40,6 @@ class PurchaseOrderPage {
     await supplierSearch.fill(testData.createPurchaseOrder.supplierName);
 
     const supplierName = testData.createPurchaseOrder.supplierName;
-    // await this.page.waitForTimeout(1000);
 
     let supplierOption = this.page.getByRole('option', {
       name: supplierName,
