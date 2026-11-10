@@ -1,4 +1,6 @@
 const { expect } = require('@playwright/test');
+const { LoginPage, loadCredentials } = require('../../pages/Login/login.page');
+
 
 exports.createVendor =
 class createVendor {
@@ -46,7 +48,7 @@ class createVendor {
 
   async goto() {
     
-    await this.page.goto('/signin');
+    await this.page.goto(loadCredentials().loginUrl);
   }
 
   async login(email, password) {
