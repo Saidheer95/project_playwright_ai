@@ -10,7 +10,6 @@ test('Create Vendor - End to End', async ({ page }) => {
         createVendorData.validLogin.email,
         createVendorData.validLogin.password
     );
-    await page.waitForTimeout(5000);
 
     await createvendorflow.companyDetails(
         createVendorData.companyDetails.companyName,
@@ -29,7 +28,6 @@ test('Create Vendor - End to End', async ({ page }) => {
         createVendorData.companyDetails.mobileCountry,
         createVendorData.companyDetails.mobile
     );
-    await page.waitForTimeout(2000);
 
     await createvendorflow.bankDetails(
         createVendorData.bankDetails.bankName,
@@ -44,5 +42,4 @@ test('Create Vendor - End to End', async ({ page }) => {
         createVendorData.bankDetails.bankCountry,
         createVendorData.bankDetails.bankPostalCode
     );
-    await page.waitForTimeout(4000);
 });

@@ -7,7 +7,6 @@ const validLegalEntities = [
     'Proprietorship', 'PSU',
     'Public Limited', 'Public Sector Companies', 'Pvt Limited', 'Trust'
 ];
-
 const validCountries = [
     'India', 'United States', 'United Kingdom',
     'Saudi Arabia', 'Australia', 'Canada', 'Germany', 'Singapore', 'Qatar'
