@@ -1,6 +1,6 @@
 const { expect, test } = require('@playwright/test');
 const { poPage } = require('../../pagesv/popage/popage');
-const { poData } = require('../../datav/podatav/podata');
+const { poData } = require('../../data/podatav/podata');
 
 test('create purchase order', async ({ page }) => {
     test.setTimeout(180_000);
