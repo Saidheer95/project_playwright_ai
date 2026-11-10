@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_01017"
+        "prNumber": "PR_01036"
     },
     "approvers": {
-        "number": "PR_01017",
+        "number": "PR_01036",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -158,7 +158,7 @@
         "bidDescription": "Enter the bid description",
         "bidType": "Tender",
         "businessEntity": "Entity1",
-        "buyer": "Harshit",
+        "buyer": "Abhilash",
         "currency": "INR",
         "enterOpendate": "2026-07-23T17:10",
         "enterClosedDate": "2026-07-26T17:27",

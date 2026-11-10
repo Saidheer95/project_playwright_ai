@@ -53,7 +53,7 @@ class DirectBid {
         await this.page.pause();
 
 
-        const dynamicData = generateBidTestData('Tender');
+        const dynamicData = generateBidTestData('RFQ');
 
 
         // await this.page.pause();
@@ -151,9 +151,7 @@ class DirectBid {
             testdata.directBid.paymentTerms
         );
 
-        await this.click(this.selectTermsAttachment);
-        await this.page.fill(this.enterDescription)
-
+      
         // Delivery Location
         await this.selectDropdown(
             this.selectDeliveryLocation,
