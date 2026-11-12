@@ -1,3 +1,4 @@
+
 const { test, expect } = require('@playwright/test');
 const { createVendor } = require('../pages/vendor/createvendorpage');
 const { createVendorData } = require('../data/vendor/createvendordata');
@@ -5,7 +6,10 @@ const { createVendorData } = require('../data/vendor/createvendordata');
 test('Create Vendor - End to End', async ({ page }) => {
     const createvendorflow = new createVendor(page);
 
+    console.log('Starting Create Vendor Test');
+
     await createvendorflow.goto();
+
     await createvendorflow.login(
         createVendorData.validLogin.email,
         createVendorData.validLogin.password
@@ -42,4 +46,12 @@ test('Create Vendor - End to End', async ({ page }) => {
         createVendorData.bankDetails.bankCountry,
         createVendorData.bankDetails.bankPostalCode
     );
+
+    // Log vendor details after successful creation
+    console.log('========== VENDOR CREATED SUCCESSFULLY ==========');
+    console.log(`Company Name : ${createVendorData.companyDetails.companyName}`);
+    console.log(`Contact Name : ${createVendorData.companyDetails.contactName}`);
+    console.log(`Mobile Number: ${createVendorData.companyDetails.mobileCountry} ${createVendorData.companyDetails.mobile}`);
+    console.log(`Email ID     : ${createVendorData.companyDetails.email}`);
+    console.log('=================================================');
 });
