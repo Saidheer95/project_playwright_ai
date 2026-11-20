@@ -5,6 +5,8 @@ const Submit_Approval = require('../../pages/PurchaseRequisition/purchasesubmit_
 const { LoginPage, loadCredentials } = require('../../pages/Login/login.page');
 const testData = require('../../testdata.json');
 
+test.describe.configure({mode:'parallel'});
+
 test.describe('Purchase Requisition Page', () => {
 
     test('Create PROne', async ({ page }) => {

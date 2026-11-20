@@ -3,6 +3,7 @@ const Create_Direct_Bid_RFP = require('../../pages/Bids/DirectBid.page');
 const Add_RFP_Line = require('../../pages/Bids/AddBidRFP.page');
 const { LoginPage, loadCredentials } = require('../../pages/Login/login.page');
 const testdata = require('../../testdata.json');
+test.describe.configure({mode:'parallel'});
 test.describe('Create Bid Flow', () => {
     test.beforeEach(async ({ page }) => {
         const loginPage = new LoginPage(page);
