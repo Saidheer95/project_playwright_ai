@@ -22,7 +22,6 @@ class PurchaseOrderPage {
   async createPurchaseOrder(testData) {
     console.log(`Creating Purchase Order for PR Number: ${testData.addLine.prNumber}`);
 
-    await this.page.pause();
     await this.page.locator(this.requisitionLink).click();
 
     const prSearch = this.page.locator(this.searchPR);
@@ -41,7 +40,6 @@ class PurchaseOrderPage {
     await supplierSearch.fill(testData.createPurchaseOrder.supplierName);
 
     const supplierName = testData.createPurchaseOrder.supplierName;
-    // await this.page.waitForTimeout(1000);
 
     let supplierOption = this.page.getByRole('option', {
       name: supplierName,

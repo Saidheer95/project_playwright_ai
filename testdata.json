@@ -21,10 +21,10 @@
         "quantity": "2",
         "uom": "Each",
         "price": "234.67",
-        "prNumber": "PR_00725"
+        "prNumber": "PR_01036"
     },
     "approvers": {
-        "number": "PR_00725",
+        "number": "PR_01036",
         "action": "Approve",
         "comments": "Approved"
     },
@@ -55,6 +55,7 @@
                 "Finance"
             ]
         },
+        "criteriaDescription": "Test",
         "criteriaOption": "Optional",
         "criteriaValueType": "Text",
         "criteriaWeight": "50",
@@ -64,14 +65,12 @@
         "commercialTeam": {
             "name": "Sai"
         },
-        "termsType": "Terms"
+        "termsType": "Terms",
+        "termsDescription": "Here the terms description data"
     },
     "createBidTender": {
         "type": "Bid",
         "bidname": "Tender",
-        "openDate": "2026-08-21T12:00",
-        "closeDate": "2026-08-22T14:27",
-        "envelopeOpenDate": "2026-08-23T14:30",
         "supplier": {
             "name": [
                 "Demo",
@@ -112,9 +111,28 @@
         "termsDescription": "Payment Terms"
     },
     "supplierBid": {
-        "bidNumber": "RFQ260199",
+        "bidNumber": "RFQ260248",
         "typeAction": "Participating",
         "buyerNotes": "Acknowledge by the supplier"
+    },
+    "createContract": {
+        "type": "Contract",
+        "supplier": {
+            "name": "Sai Corporation"
+        }
+    },
+    "reviewer": {
+        "name": [
+            "Ashok"
+        ]
+    },
+    "clauses": {
+        "title": "Standard Quality Assurance Clause",
+        "description": "The supplier shall provide the documents related to quality assurance and certifications"
+    },
+    "contractNumber": "279712947",
+    "updateClauses": {
+        "editdescription": "Edit the clause description"
     },
     "createPurchaseOrder": {
         "type": "PO",
@@ -123,19 +141,36 @@
         "advancePayment": "10"
     },
     "purchaseOrder": {
-        "poNumber": "PO_00382",
-        "action": "Reject",
-        "comments": "Rejected"
+        "poNumber": "PO_00530",
+        "action": "Approve",
+        "comments": "Approved"
     },
     "directBid": {
         "bidDescription": "Enter the bid description",
         "bidType": "RFQ",
         "businessEntity": "Entity1",
-        "buyer": "Harshit",
+        "buyer": "Abhilash",
+        "currency": "INR",
+        "paymentTerms": "30 Days",
+        "deliveryLocation": "Chennai"
+    },
+    "directBidRFP": {
+        "bidDescription": "Enter the bid description",
+        "bidType": "Tender",
+        "businessEntity": "Entity1",
+        "buyer": "Abhilash",
         "currency": "INR",
         "enterOpendate": "2026-07-23T17:10",
         "enterClosedDate": "2026-07-26T17:27",
         "paymentTerms": "30 Days",
         "deliveryLocation": "Chennai"
+    },
+    "deliveryNote": {
+        "asn": "ASN-1889",
+        "quantity": "1",
+        "carrier": "DTDC",
+        "shipDate": "2026-10-07",
+        "arrivalDate": "2026-10-09",
+        "response": "Accept"
     }
 }

@@ -1,6 +1,6 @@
 const { test } = require('@playwright/test');
 const Create_Direct_Bid = require('../../pages/Bids/DirectBid.page');
-const Add_Line = require('../../pages/Bids/AddBidLine.page');
+const Add_Line = require('../../pages/Bids/AddBidRFQ.page');
 const { LoginPage, loadCredentials } = require('../../pages/Login/login.page');
 const testdata = require('../../testdata.json');
 test.describe('Create Bid Flow', () => {

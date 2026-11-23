@@ -1,5 +1,6 @@
+const { expect } = require('@playwright/test');
 const { assertVisible } = require('../../utils/assertions');
-const {generateBidTestData } = require('../../utils/dataGenerator');
+const { generateBidTestData } = require('../../utils/dataGenerator');
 
 class DirectBid {
     constructor(page) {
@@ -14,12 +15,16 @@ class DirectBid {
         this.selectCurrency = '[data-testid="select-bid-currency"]';
         this.selectBidOpenDate = '[data-testid="input-bid-start-date"]';
         this.selectBidCloseDate = '[data-testid="input-bid-end-date"]';
-
+        this.selectBidEnvelopeDate = '[data-testid="input-bid-env-open-date"]';
         this.selectPaymentTerms = '[data-testid="select-bid-payment-terms"]';
+        this.selectTermsAttachment='[data-testid="button-add-terms-attachment"]';
+        this.enterDescription='[data-testid="input-terms-attach-desc"]';
+        this.selectAttachment='[data-testid="button-add-terms-attachment"]';
+        this.finaltermsAttachment='[data-testid="button-submit-terms-attachment"]'
 
         this.selectDeliveryLocation =
             '[data-testid="select-bid-delivery-location"]';
-        this.clickSave='[data-testid="button-save-bid"]';
+        this.clickSave = '[data-testid="button-save-bid"]';
     }
 
     async selectDropdown(dropdownLocator, optionText) {
@@ -45,10 +50,13 @@ class DirectBid {
 
     async bidDirectPage(testdata) {
 
+        await this.page.pause();
+
+
         const dynamicData = generateBidTestData('RFQ');
 
 
-        await this.page.pause();
+        // await this.page.pause();
 
         await this.page.click(this.clickBid);
 
@@ -115,18 +123,35 @@ class DirectBid {
         // console.log(`Bid Open Date Time : ${formattedDateTime}`);
 
         await this.page.click(this.selectBidOpenDate);
-        await this.page.fill(this.selectBidOpenDate,dynamicData.openDate);
+        await this.page.fill(this.selectBidOpenDate, dynamicData.openDate);
 
 
         await this.page.click(this.selectBidCloseDate);
-        await this.page.fill(this.selectBidCloseDate,dynamicData.closeDate);     
-        
+        await this.page.fill(this.selectBidCloseDate, dynamicData.closeDate);
+
+
+        // const envelopeOpenDate = this.page.locator(this.selectBidEnvelopeDate);
+        // await expect(envelopeOpenDate).toBeEnabled();
+
+
+        // console.log('Envelope Open Date:', dynamicData.envelopeOpenDate);
+
+        // await envelopeOpenDate.fill(dynamicData.envelopeOpenDate);
+
+        // await expect(envelopeOpenDate).toHaveValue(
+        //     dynamicData.envelopeOpenDate
+        // );
+
+
+
+
         // Payment Terms
         await this.selectDropdown(
             this.selectPaymentTerms,
             testdata.directBid.paymentTerms
         );
 
+      
         // Delivery Location
         await this.selectDropdown(
             this.selectDeliveryLocation,

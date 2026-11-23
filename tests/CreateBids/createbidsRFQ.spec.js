@@ -19,7 +19,7 @@ test.describe('Create Bid Flow',()=>{
          // Read Bid Number and save to JSON
         const bidNumber = await create_bid_page.getBIDNumber();
 
-        console.log(`PO Number Saved: ${bidNumber}`);
+        console.log(`RFQ Number Saved: ${bidNumber}`);
 
     });
 })

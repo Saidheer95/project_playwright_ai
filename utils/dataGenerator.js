@@ -1,10 +1,5 @@
 const { faker } = require('@faker-js/faker');
 
-
-/**
- * Format date as:
- * YYYY-MM-DDTHH:mm
- */
 function formatDateTimeLocal(date) {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -15,15 +10,21 @@ function formatDateTimeLocal(date) {
     return `${year}-${month}-${day}T${hours}:${minutes}`;
 }
 
+function formatDateOnly(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+}
 
 /**
- * Generate RFQ / RFP dates
+ * Generate RFQ dates
  *
  * Open  = current time + 5 minutes
  * Close = open + 3 days
  */
-function generateBidDates() {
-
+function generateRFQDates() {
     const now = new Date();
 
     const openDate = new Date(now);
@@ -38,6 +39,26 @@ function generateBidDates() {
     };
 }
 
+/**
+ * Generate RFP dates
+ *
+ * Open  = current time + 5 minutes
+ * Close = open + 3 days
+ */
+function generateRFPDates() {
+    const now = new Date();
+
+    const openDate = new Date(now);
+    openDate.setMinutes(openDate.getMinutes() + 5);
+
+    const closeDate = new Date(openDate);
+    closeDate.setDate(closeDate.getDate() + 3);
+
+    return {
+        openDate: formatDateTimeLocal(openDate),
+        closeDate: formatDateTimeLocal(closeDate)
+    };
+}
 
 /**
  * Generate Tender dates
@@ -47,7 +68,6 @@ function generateBidDates() {
  * Envelope Open = close + 1 hour
  */
 function generateTenderDates() {
-
     const now = new Date();
 
     const openDate = new Date(now);
@@ -57,9 +77,7 @@ function generateTenderDates() {
     closeDate.setDate(closeDate.getDate() + 3);
 
     const envelopeOpenDate = new Date(closeDate);
-    envelopeOpenDate.setHours(
-        envelopeOpenDate.getHours() + 1
-    );
+    envelopeOpenDate.setHours(envelopeOpenDate.getHours() + 1);
 
     return {
         openDate: formatDateTimeLocal(openDate),
@@ -68,12 +86,27 @@ function generateTenderDates() {
     };
 }
 
-
 /**
- * Generate meaningful procurement description
+ * Generate Contract dates
+ *
+ * Open  = current date
+ * Close = open + 3 days
  */
-function generateDescription() {
+function generateContractDates() {
+    const now = new Date();
 
+    const openDate = new Date(now);
+
+    const closeDate = new Date(openDate);
+    closeDate.setDate(closeDate.getDate() + 3);
+
+    return {
+        openDate: formatDateOnly(openDate),
+        closeDate: formatDateOnly(closeDate)
+    };
+}
+
+function generateDescription() {
     const descriptions = [
         'The supplier must provide high-quality materials within the agreed delivery timeline.',
         'The supplier should ensure that all products meet the required quality and technical standards.',
@@ -85,12 +118,7 @@ function generateDescription() {
     return faker.helpers.arrayElement(descriptions);
 }
 
-
-/**
- * Generate criteria description
- */
 function generateCriteriaDescription() {
-
     const criteria = [
         'The supplier must demonstrate the ability to deliver the required materials within the specified timeline.',
         'The supplier must provide products that meet the required technical and quality standards.',
@@ -102,12 +130,7 @@ function generateCriteriaDescription() {
     return faker.helpers.arrayElement(criteria);
 }
 
-
-/**
- * Generate terms description
- */
 function generateTermsDescription() {
-
     const terms = [
         'Payment will be processed according to the agreed commercial terms after successful delivery.',
         'All supplied products must comply with the agreed specifications and quality requirements.',
@@ -119,82 +142,107 @@ function generateTermsDescription() {
     return faker.helpers.arrayElement(terms);
 }
 
-
-/**
- * Generate unique reference number
- */
-function generateReferenceNumber(prefix = 'RFQ') {
-
-    return `${prefix}-${faker.string
-        .alphanumeric(8)
-        .toUpperCase()}`;
+function generateReferenceNumber(prefix) {
+    return `${prefix}-${faker.string.alphanumeric(8).toUpperCase()}`;
 }
 
+/**
+ * Common data
+ */
+function generateCommonData(type) {
+    return {
+        type,
+        description: generateDescription(),
+        criteriaDescription: generateCriteriaDescription(),
+        termsDescription: generateTermsDescription(),
+        referenceNumber: generateReferenceNumber(type)
+    };
+}
 
 /**
- * Generate complete dynamic test data
- *
- * Supported types:
- * RFQ
- * RFP
- * TENDER
+ * Generate RFQ test data
  */
-function generateBidTestData(type = 'RFQ') {
+function generateRFQTestData() {
+    return {
+        ...generateCommonData('RFQ'),
+        ...generateRFQDates()
+    };
+}
 
-    const normalizedType = type.toUpperCase();
+/**
+ * Generate RFP test data
+ */
+function generateRFPTestData() {
+    return {
+        ...generateCommonData('RFP'),
+        ...generateRFPDates()
+    };
+}
 
-    if (!['RFQ', 'RFP', 'TENDER'].includes(normalizedType)) {
+/**
+ * Generate Tender test data
+ */
+function generateTenderTestData() {
+    return {
+        ...generateCommonData('TENDER'),
+        ...generateTenderDates()
+    };
+}
+
+/**
+ * Generate Contract test data
+ */
+function generateContractTestData() {
+    return {
+        ...generateCommonData('CONTRACT'),
+        ...generateContractDates()
+    };
+}
+
+/**
+ * Generic generator
+ *
+ * Can still be used when the type is dynamic.
+ */
+function generateBidTestData(type) {
+    if (!type) {
         throw new Error(
-            `Unsupported bid type: ${type}. Supported types: RFQ, RFP, TENDER`
+            'Bid type is required. Supported types: RFQ, RFP, TENDER, CONTRACT'
         );
     }
 
-    const commonData = {
+    const normalizedType = type.toUpperCase();
 
-        type: normalizedType,
+    switch (normalizedType) {
+        case 'RFQ':
+            return generateRFQTestData();
 
-        description:
-            generateDescription(),
+        case 'RFP':
+            return generateRFPTestData();
 
-        criteriaDescription:
-            generateCriteriaDescription(),
+        case 'TENDER':
+            return generateTenderTestData();
 
-        termsDescription:
-            generateTermsDescription(),
+        case 'CONTRACT':
+            return generateContractTestData();
 
-        referenceNumber:
-            generateReferenceNumber(normalizedType)
-    };
-
-
-    // RFQ and RFP use the same bid dates
-    if (
-        normalizedType === 'RFQ' ||
-        normalizedType === 'RFP'
-    ) {
-
-        return {
-            ...commonData,
-            ...generateBidDates()
-        };
-    }
-
-
-    // Tender has additional envelope open date
-    if (normalizedType === 'TENDER') {
-
-        return {
-            ...commonData,
-            ...generateTenderDates()
-        };
+        default:
+            throw new Error(
+                `Unsupported bid type: ${type}. Supported types: RFQ, RFP, TENDER, CONTRACT`
+            );
     }
 }
 
-
 module.exports = {
     generateBidTestData,
-    generateBidDates,
+    generateRFQTestData,
+    generateRFPTestData,
+    generateTenderTestData,
+    generateContractTestData,
+    generateRFQDates,
+    generateRFPDates,
     generateTenderDates,
+    generateContractDates,
     generateDescription,
     generateCriteriaDescription,
     generateTermsDescription,

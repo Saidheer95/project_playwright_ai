@@ -121,7 +121,7 @@ class AddLine {
         await this.page.click(this.clauseSubmit);
         // Click the publish bid button to begin publishing
         await this.page.click(this.publishBid);
-        // Confirm the final publish action for the bid
+        // Confirm the final publish action for bid
         await this.page.click(this.finalBid);
 
     }

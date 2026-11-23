@@ -1,3 +1,4 @@
+const { generateTenderTestData } = require('../../utils/dataGenerator');
 class BidsTender {
     constructor(page) {
         this.page = page;
@@ -35,15 +36,18 @@ class BidsTender {
         this.clickCommitteeTeam = '[data-testid="button-select-member-committee-team"]';
         this.clickAddTerms = '[data-testid="button-add-clause"]';
         this.selectTermsType = '[data-testid="select-clause-type"]';
-        this.enterTermsDesciption='[data-testid="input-clause-desc"]';
-        this.clauseSubmit='[data-testid="button-submit-clause"]';
-        this.publishBid='[data-testid="button-publish-bid"]';
-        this.finalBid='[data-testid="button-publish-confirm"]';
+        this.enterTermsDesciption = '[data-testid="input-clause-desc"]';
+        this.clauseSubmit = '[data-testid="button-submit-clause"]';
+        this.publishBid = '[data-testid="button-publish-bid"]';
+        this.finalBid = '[data-testid="button-publish-confirm"]';
 
     }
 
     async createBidTender(testData) {
-        await this.page.pause();
+        const dynamicData = generateTenderTestData('TENDER');
+
+        console.log('Generated Tender data:', dynamicData);
+
         await this.page.click(this.requisitionLink);
         await this.page.fill(this.searchPR, testData.addLine.prNumber);
         const clickButton = await this.page.getByRole('button', { name: testData.createBidTender.type });
@@ -52,9 +56,9 @@ class BidsTender {
         const options = await this.page.locator('[role="option"]').allTextContents();
         console.log(options);
         await this.page.getByText(testData.createBidTender.bidname).click();
-        await this.page.fill(this.selectOpenDate, testData.createBidTender.openDate);
-        await this.page.fill(this.selectCloseDate, testData.createBidTender.closeDate);
-        await this.page.fill(this.selectEnvelopeOpenDate, testData.createBidTender.envelopeOpenDate);
+        await this.page.fill(this.selectOpenDate, dynamicData.openDate);
+        await this.page.fill(this.selectCloseDate, dynamicData.closeDate);
+        await this.page.fill(this.selectEnvelopeOpenDate, dynamicData.envelopeOpenDate);
         await this.page.click(this.submitBid);
         await this.page.click(this.tabSuppliers);
         await this.page.click(this.clickSupplier)
@@ -74,21 +78,53 @@ class BidsTender {
         await this.page.click(this.finalInvite);
         await this.page.click(this.evaluationCriteriaTab);
 
+
+
         for (const category of testData.createBidTender.criteriaCategory.name) {
-            await this.page.click(this.addCriteria);
-            await this.page.click(this.selectCategory);
-            const options1 = await this.page.locator('[role="option"]').allTextContents();
-            // Print the available option text values to the console
-            console.log(options1);
-            await this.page.getByRole('option', { name: category }).click();
-            await this.page.fill(this.enterCriteriaDescription, testData.createBidTender.criteriaDescription);
+            await this.page.locator(this.addCriteria).click();
+
+            await this.page.locator(this.selectCategory).waitFor({
+                state: 'visible'
+            });
+
+            await this.page.locator(this.selectCategory).click();
+
+            await this.page.getByRole('option', {
+                name: category,
+                exact: true
+            }).click();
+
+            await this.page.fill(
+                this.enterCriteriaDescription,
+                testData.createBidTender.criteriaDescription
+            );
+
             await this.page.click(this.selectCriteriaValue);
-            await this.page.getByRole('option', { name: testData.createBidTender.criteriaOption }).click();
+
+            await this.page.getByRole('option', {
+                name: testData.createBidTender.criteriaOption,
+                exact: true
+            }).click();
+
             await this.page.click(this.selectValueType);
-            await this.page.getByRole('option', { name: testData.createBidTender.criteriaValueType }).click();
-            await this.page.fill(this.enterCriteriaValue, testData.createBidTender.criteriaWeight);
-            await this.page.click(this.submitCriteria);
+
+            await this.page.getByRole('option', {
+                name: testData.createBidTender.criteriaValueType,
+                exact: true
+            }).click();
+
+            await this.page.fill(
+                this.enterCriteriaValue,
+                testData.createBidTender.criteriaWeight
+            );
+
+            await this.page.locator(this.submitCriteria).click();
+
+            await this.page.locator(this.submitCriteria).waitFor({
+                state: 'hidden'
+            });
         }
+
 
         await this.page.click(this.selectEvaluationTeam);
         await this.page.click(this.selectTechnicalTeam);
@@ -103,7 +139,7 @@ class BidsTender {
         await this.page.click(this.selectCommercialApproveTeam);
         await this.page.fill(this.searchCommercialApproveTeam, testData.createBidTender.commercialApproveTeam.name);
         await this.page.getByRole('option', { name: testData.createBidTender.commercialApproveTeam.name }).click();
-       
+
         const committeeMembers = testData.createBidTender.committeeTeam.name;
 
         for (const member of committeeMembers) {
@@ -137,7 +173,7 @@ class BidsTender {
                 await option.count()
             );
 
-          
+
 
             // Click user
             await option.first().click();
@@ -162,6 +198,3 @@ class BidsTender {
         await this.page.click(this.finalBid);
     }
 } module.exports = BidsTender;
-
-
-
